@@ -7,12 +7,12 @@ import { fetchAccessTokens } from './bTokenActionThunks';
 import styles from './formStyle.styl';
 
 const renderInput = field => (
-  <div>
+  <div >
     <input {...field.input} type={field.type} label={field.label} />
     {field.meta.touched &&
     field.meta.error &&
-    <span className="error" >{field.meta.error}</span>}
-  </div>
+    <span className="error" >{field.meta.error}</span >}
+  </div >
 );
 
 const triggerLogin = (values, dispatch) => {
@@ -26,24 +26,26 @@ const loginForm = (props) => {
   } = props;
   return (
     <div className={styles.body} >
-      <p>Pick your handle Cowboy!</p>
+      <p >Pick your handle Cowboy!</p >
       <form className={styles.form} onSubmit={handleSubmit(val => triggerLogin(val, dispatch))} >
         <Field name="username" component={renderInput} type="text" label="username" />
         <Field name="password" component={renderInput} type="password" label="password" />
-        <Button
-          type="submit"
-          disabled={pristine || submitting}
-        >Submit
-        </Button>
-        <Button
-          type="button"
-          disabled={pristine || submitting}
-          onClick={reset}
-        >
-          Reset
-        </Button>
-      </form>
-    </div>
+        <div className={styles.formButtons} >
+          <Button
+            type="submit"
+            disabled={pristine || submitting}
+          >Submit
+          </Button >
+          <Button
+            type="button"
+            disabled={pristine || submitting}
+            onClick={reset}
+          >
+            Reset
+          </Button >
+        </div >
+      </form >
+    </div >
   );
 };
 

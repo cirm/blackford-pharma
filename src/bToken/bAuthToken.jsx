@@ -21,9 +21,9 @@ const urlBase64Becode = (str: string): jsonToken => {
   return profile; // polifyll https://github.com/davidchambers/Base64.js
 };
 
-const splitToken = (str: string) => str.split('.')[1];
+const splitToken = (str: string): string => str.split('.')[1];
 
-const decodeProfile = (str: string) => {
+const decodeProfile = (str: string): jsonToken => {
   const encodedProfile = splitToken(str);
   return urlBase64Becode(encodedProfile);
 };

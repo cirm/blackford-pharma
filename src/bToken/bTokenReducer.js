@@ -24,15 +24,17 @@ const updateTokens = (state: TokenState, data: TokenApiResponse): TokenState => 
 };
 
 const getInitialState = (state: TokenState = {}): TokenState => {
-  const token: string = JSON.parse(localStorage.getItem(chatTokenKey));
-  const apiToken: string = JSON.parse(localStorage.getItem(apiTokenKey));
-  if (!token) {
+  const token: ?string = localStorage.getItem(chatTokenKey);
+  const apiToken: ?string = localStorage.getItem(apiTokenKey);
+  console.log(token);
+  // console.log(apiToken);
+  if (!token || !apiToken) {
     return {
       ...state,
     };
   }
-  const decoded: DecodedTwilioToken = decodeProfile(token);
-  const decodedApiToken: DecodedApiToken = decodeProfile(apiToken);
+  const decoded: DecodedTwilioToken = decodeProfile(JSON.parse(token));
+  const decodedApiToken: DecodedApiToken = decodeProfile(JSON.parse(apiToken));
   return {
     ...state,
     identity: decoded.grants.identity,

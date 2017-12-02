@@ -13,14 +13,18 @@
   color #28FC91
 
 .form
-  align-content space-between
+  display flex
+  flex-direction column
+  justify-content space-between
 
 .form
   & > div
-    width 100%
-    margin 2px
+    margin 5px
+    width 160px
+    display flex
+    justify-content baseline
 
-.form
-  & > div
-    & > input
-      width 100%
+.formButtons
+  display flex
+  flex 1 1 auto
+  justify-content space-between

@@ -21,7 +21,7 @@ const Users = props => (
 
 export const SocialPanel = props => (
   <div style={{
-    flex: '1 1 10%', border: '1px solid #28FC91', margin: '5px 5px 5px', padding: '5px',
+    flex: '1 1 auto', border: '1px solid #28FC91', margin: '5px 5px 5px', padding: '5px',
   }}
   >
     {props.showChannels

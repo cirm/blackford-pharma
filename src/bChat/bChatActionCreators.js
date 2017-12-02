@@ -1,12 +1,12 @@
 // @flow
 import { CONNECT, TOGGLE_SIDEBAR, UPDATE_CHAT_CHANNEL, UPDATE_MESSAGES, UPDATE_USERS } from './bChatActionConstants';
-import type { channelApiResponse, messageApiResponse } from '../types/Twilio';
+import type { channelItem, messageApiResponse } from '../types/Twilio';
 
 export const toggleSidebar = (data: boolean) => ({
   type: TOGGLE_SIDEBAR,
   data,
 });
-export const updateChatChannel = (data: channelApiResponse) => ({
+export const updateChatChannel = (data: channelItem) => ({
   type: UPDATE_CHAT_CHANNEL,
   data,
 });

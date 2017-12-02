@@ -7,9 +7,10 @@ import { connectTwilioClient } from './bChatActionCreators';
 
 class MainDashboard extends React.PureComponent {
   componentWillMount() {
-    if (!this.props.identity || !this.props.chatToken) {
+    if (!this.props.identity && !this.props.chatToken) {
       this.props.dispatch(push('/token'));
     }
+
     if (this.props.chatToken) {
       this.props.dispatch(connectTwilioClient(this.props.chatToken));
     }
@@ -44,7 +45,7 @@ class MainDashboard extends React.PureComponent {
 
   render() {
     return (
-      <div style={{ display: 'flex', height: '100%' }}>
+      <div style={{ display: 'flex',flex: '1 1 auto' }}>
         {this.props.currentChannel ? <ChatPanel
           channel={this.props.currentChannel}
           messages={this.props.messages}

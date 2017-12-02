@@ -8,6 +8,7 @@ import { getStore, history } from './store';
 import App from './bApp/bApp';
 import DashboardContainer from './bChat/bChatDashboard';
 import { LoginDashboard } from './bToken/bTokenDashboard';
+import OptionsDashboard from './bOptions/bOptionsDashboard';
 
 
 require('./fonts/ahamono.styl');
@@ -22,6 +23,7 @@ const render = (Component) => {
           <Component>
             <Route path="/" exact component={DashboardContainer} />
             <Route path="/token" exact component={LoginDashboard} />
+            <Route path="/options" exact component={OptionsDashboard} />
           </Component>
         </ConnectedRouter>
       </Provider>

@@ -13,6 +13,6 @@ export type ChatState = {
     +sidebar: boolean,
     +userList: string[],
     +messages: messageApiResponse,
-    +currentChannel?: channelItem,
+    +currentChannel: ?channelItem,
     +channels: channelApiResponse,
   };

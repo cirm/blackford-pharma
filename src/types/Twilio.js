@@ -45,3 +45,7 @@ export type membersItem = {
     userInfo: string,
   }
 }
+export type twilioChannel = {
+  getMessages: () => messageApiResponse,
+  getMembers: () => membersItem[],
+}

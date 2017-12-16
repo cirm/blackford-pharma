@@ -10,7 +10,7 @@ import {
 import type { Action } from '../types/Action';
 import type { ChatState } from '../types/State';
 
-const emptyChannel = { items: [] };
+const emptyChannel = { state: { items: [] } };
 
 const initialState: ChatState = {
   sidebar: true,

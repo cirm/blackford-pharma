@@ -4,10 +4,12 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "airbnb",
-    "plugin:lodash-fp/recommended"
+    "plugin:lodash-fp/recommended",
+    "plugin:flowtype/recommended"
   ],
   "plugins": [
     "react",
+    "flowtype",
     "lodash-fp"
   ],
   "env": {

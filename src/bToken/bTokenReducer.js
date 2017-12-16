@@ -11,12 +11,12 @@ const chatTokenKey: string = 'chatToken';
 const apiTokenKey: string = 'apiToken';
 
 const updateTokens = (state: TokenState, data: TokenApiResponse): TokenState => {
-  localStorage.setItem(chatTokenKey, JSON.stringify(data.token));
+  localStorage.setItem(chatTokenKey, JSON.stringify(data.chatToken));
   localStorage.setItem(apiTokenKey, JSON.stringify(data.apiToken));
   return {
     ...state,
     identity: data.identity,
-    chatToken: data.token,
+    chatToken: data.chatToken,
     apiToken: data.apiToken,
     id: data.id,
     roles: data.roles,
@@ -24,21 +24,30 @@ const updateTokens = (state: TokenState, data: TokenApiResponse): TokenState => 
 };
 
 const getInitialState = (state: TokenState = {}): TokenState => {
-  const token: ?string = localStorage.getItem(chatTokenKey);
-  const apiToken: ?string = localStorage.getItem(apiTokenKey);
-  console.log(token);
-  // console.log(apiToken);
-  if (!token || !apiToken) {
+  const tempChatToken = localStorage.getItem(chatTokenKey);
+  const tempApiToken = localStorage.getItem(apiTokenKey);
+
+  if (!tempChatToken || !tempApiToken) {
+    return {
+      ...state,
+    }
+  }
+
+  const chatToken: string = JSON.parse(tempChatToken);
+  const apiToken: string = JSON.parse(tempApiToken);
+
+  if (!chatToken || !apiToken) {
     return {
       ...state,
     };
   }
-  const decoded: DecodedTwilioToken = decodeProfile(JSON.parse(token));
-  const decodedApiToken: DecodedApiToken = decodeProfile(JSON.parse(apiToken));
+
+  const decodedChatToken: DecodedTwilioToken = decodeProfile(chatToken);
+  const decodedApiToken: DecodedApiToken = decodeProfile(apiToken);
   return {
     ...state,
-    identity: decoded.grants.identity,
-    chatToken: token,
+    identity: decodedChatToken.grants.identity,
+    chatToken,
     apiToken,
     roles: decodedApiToken.roles,
     id: decodedApiToken.id,

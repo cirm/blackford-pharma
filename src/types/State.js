@@ -1,5 +1,5 @@
 // @flow
-import type { channelApiResponse, channelItem, messageApiResponse } from './Twilio';
+import type { ChannelApiResponse, ChannelItem, MessageApiResponse } from './Twilio';
 
 export type TokenState = {
   +identity?: string,
@@ -12,7 +12,19 @@ export type TokenState = {
 export type ChatState = {
     +sidebar: boolean,
     +userList: string[],
-    +messages: messageApiResponse,
-    +currentChannel: ?channelItem,
-    +channels: channelApiResponse,
+    +messages: MessageApiResponse,
+    +currentChannel: ?ChannelItem,
+    +channels: ChannelApiResponse,
   };
+
+export type RouterState = {
+  location: {
+    pathname: string,
+  },
+};
+
+export type State = {
+  chat: ChatState,
+  token: TokenState,
+  router: RouterState,
+};

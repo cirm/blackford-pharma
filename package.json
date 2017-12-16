@@ -26,8 +26,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "twilio": "^3.9.2",
-    "twilio-chat": "^1.2.1",
-    "uuid": "^3.1.0"
+    "twilio-chat": "^1.2.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.4",
@@ -39,8 +38,10 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "css-loader": "^0.28.7",
+    "css-modules-flow-types-loader": "^1.1.0",
     "eslint": "^4.11.0",
     "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-flowtype": "^2.39.1",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-lodash-fp": "^2.1.3",

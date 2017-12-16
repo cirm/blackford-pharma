@@ -1,5 +1,5 @@
 // @flow
-export type channelItem = {
+export type ChannelItem = {
   channel: string,
   createdBy: string,
   dateCreated: Date,
@@ -13,14 +13,12 @@ export type channelItem = {
   status: string,
   type: string,
   uniqueName: string,
+  on: (key: string, action: () => void) => void,
+  getMessages: (pagesize?: number) => Promise<MessageApiResponse>,
+  getMembers: () => Promise<MembersItem[]>,
 };
 
-export type channelApiResponse = {
-  private: {items : channelItem[]},
-  public: {items: channelItem[]},
-};
-
-export type messageItem = {
+export type MessageItem = {
   state: {
     author: string,
     body: string,
@@ -32,20 +30,37 @@ export type messageItem = {
   }
 };
 
-export type messageApiResponse = {
-  items: messageItem[],
+export type MessageApiResponse = {
+  items: MessageItem[],
 }
 
-export type membersItem = {
-  state : {
+export type MembersItem = {
+  state: {
     identity: string,
     isTyping: boolean,
-    roleSid: string,
     sid: string,
     userInfo: string,
   }
 }
-export type twilioChannel = {
-  getMessages: () => messageApiResponse,
-  getMembers: () => membersItem[],
+
+export type ChannelDescriptor = {
+  getChannel: () => Promise<ChannelItem>
 }
+
+export type ClientChannelResponse = {
+  state: {
+    items: Array<ChannelItem>
+  }
+}
+
+export type TwilioClient = {
+  getUserChannelDescriptors: () => Promise<ClientChannelResponse>,
+  getPublicChannelDescriptors: () => Promise<ClientChannelResponse>,
+  on: (key: string, action: () => void) => void,
+  create: (token: string) => Promise<TwilioClient>,
+}
+
+export type ChannelApiResponse = {
+  private: ClientChannelResponse,
+  public: ClientChannelResponse,
+};

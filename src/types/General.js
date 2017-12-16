@@ -1,6 +1,6 @@
 // @flow
 export type tokens = {
-  token: string,
+  chatToken: string,
   apiToken: string,
 };
 
@@ -8,7 +8,7 @@ export type TokenApiResponse = {
   identity: string,
   id: number,
   roles: string[],
-  token: string,
+  chatToken: string,
   apiToken: string,
 };
 
@@ -33,4 +33,9 @@ export type DecodedApiToken = {
   iat: number,
   id: number,
   username: string,
+}
+
+export type AuthPayload = {
+  username: string,
+  password: string,
 }

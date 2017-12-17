@@ -6,7 +6,7 @@ import { SocialContainer } from './bSocialPanel';
 import ChatPanel, { EmptyContainer } from './bChatPanel';
 import { loadChannel } from './bChatActionThunks';
 import type { State } from '../types/State';
-import type { MessageApiResponse, ChannelItem, MembersItem } from '../types/Twilio';
+import type { PaginatorItem, MessageItem, ChannelItem, MembersItem } from '../types/Twilio';
 
 type Props = {
   chatToken: string,
@@ -14,7 +14,7 @@ type Props = {
   sidebar: boolean,
   userList: Array<MembersItem>,
   channels: Array<ChannelItem>,
-  messages: MessageApiResponse,
+  messages: PaginatorItem<MessageItem>,
   currentChannel: ChannelItem,
   goToken: () => void,
 };
@@ -33,7 +33,10 @@ class MainDashboard extends React.PureComponent<Props> {
   }
 
   componentWillUpdate(nextProps) {
-    this.historyChanged = nextProps.messages.items.length !== this.props.messages.items.length;
+    this.historyChanged = false;
+    if (nextProps.messages) {
+      this.historyChanged = this.props.messages ? nextProps.messages.items.length !== this.props.messages.items.length : true;
+    }
     if (this.historyChanged) {
       const chat: ChatUX = this.bChatTextArea;
       const scrollPos: number = chat.scrollTop;

@@ -10,14 +10,9 @@ import {
 import type { Action } from '../types/Action';
 import type { ChatState } from '../types/State';
 
-const emptyChannel = { state: { items: [] } };
-
 const initialState: ChatState = {
   sidebar: true,
   userList: [],
-  channels: { private: emptyChannel, public: emptyChannel },
-  currentChannel: undefined,
-  messages: { items: [] },
 };
 
 const chatReducer = (state: ChatState = initialState, action: Action): ChatState => {
@@ -31,9 +26,9 @@ const chatReducer = (state: ChatState = initialState, action: Action): ChatState
     case TOGGLE_SIDEBAR:
       return { ...state, sidebar: action.data };
     case UPDATE_MESSAGES:
-      return { ...state, messages: action.data };
+      return { ...state, messages: action.data }; // FIXME
     case NEW_MESSAGE:
-      return { ...state, messages: { items: [...state.messages.items, action.data] } };
+      return { ...state, messages: {...state.messages, items: [...state.messages.items, action.data]} }; // FIXME
     default:
       return state;
   }

@@ -4,41 +4,37 @@ import { connect } from 'react-redux';
 import styles from './bSocialPanel.styl';
 import { loadChannel } from './bChatActionThunks';
 import { toggleSidebar } from './bChatActionCreators';
+import type { State } from '../types/State';
 
 const Channels = props => (
-  <div>
-  <div>{console.log(props.channelList)}</div>
-  <div >{props.channelList.private.state.items.map(channel => (<p
-    onClick={() => {props.loadChannel(channel)}}
-    className={styles.text}
-  >{channel.friendlyName}
-  </p >))}
-  </div ></div>);
+  <div >{props.channels ? props.channels.private.items.map(channel => (
+    <p
+      key={channel.sid}
+      onClick={() => {props.loadChannel(channel)}}
+      className={styles.text}
+    >
+      {channel.friendlyName}
+    </p>)): null}
+</div>);
 
 const Users = props => (
   <div >
     {props.userList.map(user =>
-      <p className={styles.text} >{user.identity}</p >)}
-  </div >);
+      <p className={styles.text} >{user.identity}</p>)}
+  </div>);
 
 export const SocialPanel = props => (
-  <div style={{
-    flex: '1 1 auto', border: '1px solid #28FC91', margin: '5px 5px 5px', padding: '5px',
-  }}
-  >
+  <div className={styles.panelStyle}>
     {props.showChannels
-      ? <Channels loadChannel={props.loadChannel} channelList={props.channelList || []} />
-      : <div ><Button onClick={() => {props.toggleSidebar(true)}}
-      >Channels
-      </Button >
-        <Users
-          userList={props.userList}
-        />
-      </div >}
-  </div >
+      ? <Channels loadChannel={props.loadChannel} channels={props.channels} />
+      : <div>
+        <Button onClick={() => {props.toggleSidebar(true)}}>Channels</Button>
+        <Users userList={props.userList}/>
+      </div>}
+  </div>
 );
 
-const mapPropsToState = (state) => ({
+const mapPropsToState = (state: State) => ({
   sidebar: state.chat.sidebar,
   userList: state.chat.userList,
   channels: state.chat.channels,

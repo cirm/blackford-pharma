@@ -1,5 +1,5 @@
 // @flow
-import type { ChannelApiResponse, ChannelItem, MessageApiResponse } from './Twilio';
+import type { ChannelApiResponse, ChannelItem, PaginatorItem, MessageItem, MembersItem } from './Twilio';
 
 export type TokenState = {
   +identity?: string,
@@ -11,10 +11,10 @@ export type TokenState = {
 
 export type ChatState = {
     +sidebar: boolean,
-    +userList: string[],
-    +messages: MessageApiResponse,
-    +currentChannel: ?ChannelItem,
-    +channels: ChannelApiResponse,
+    +userList: Array<MembersItem>,
+    +messages?: PaginatorItem<MessageItem>,
+    +currentChannel?: ChannelItem,
+    +channels?: ChannelApiResponse,
   };
 
 export type RouterState = {

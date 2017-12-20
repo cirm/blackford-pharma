@@ -21,11 +21,9 @@ export const renewToken = (apiToken: string): ThunkAction => async (dispatch: Di
   try {
     const client: TwilioClient = await Chat.create(tokens.chatToken);
     mapRemoteChatActions(client);
-    console.log(await client.getPublicChannelDescriptors());
     const channels: Array<ChannelPaginator<ChannelDescriptor>> = await Promise.all([
       client.getUserChannelDescriptors(), client.getPublicChannelDescriptors(),
     ]);
-    console.log(channels);
     dispatch(updateChannels({ private: channels[0].state, public: channels[1].state }));
   } catch (e) {
     dispatch(twilioInvalid());
@@ -36,11 +34,9 @@ export const connectChat = (tokens: Tokens): ThunkAction => async (dispatch) => 
   try {
     const client: TwilioClient = await Chat.create(tokens.chatToken);
     mapRemoteChatActions(client);
-    console.log(await client.getPublicChannelDescriptors());
     const channels: Array<ChannelPaginator<ChannelDescriptor>> = await Promise.all([
       client.getUserChannelDescriptors(), client.getPublicChannelDescriptors(),
     ]);
-    console.log(channels);
     dispatch(updateChannels({ private: channels[0].state, public: channels[1].state }));
   } catch (e) {
     dispatch(twilioInvalid());

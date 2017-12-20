@@ -3,12 +3,12 @@ import React from 'react';
 import ChatInput from './components/bChatInput';
 import ChatText from './components/bChatTextArea';
 import styles from './bChatPanel.styl';
-import type { PaginatorItem, MessageItem, ChannelItem } from '../types/Twilio';
+import type { MessageItem, ChannelItem } from '../types/Twilio';
 
 type Props = {
   channel: ChannelItem,
-  messages: PaginatorItem<MessageItem>,
-  inputRef: (el: string) => void,
+  messages: Array<MessageItem>,
+  inputRef: (el: ?HTMLDivElement) => void,
 };
 
 const chatContainer = (props: Props) => (

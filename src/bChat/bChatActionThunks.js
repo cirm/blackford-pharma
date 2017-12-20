@@ -10,8 +10,8 @@ export const loadChannel = (channelDescriptor: ChannelDescriptor): ThunkAction =
   const Channel: ChannelItem = await channelDescriptor.getChannel();
   dispatch(updateChatChannel(Channel));
   mapRemoteChannelActions(Channel, dispatch);
-  const Messages = await Channel.getMessages(100);
-  dispatch(updateMessages(Messages));
+  const Messages = await Channel.getMessages(1000);
+  dispatch(updateMessages(Messages.items));
   const Members = await Channel.getMembers();
   dispatch(updateUsers(Members));
 };

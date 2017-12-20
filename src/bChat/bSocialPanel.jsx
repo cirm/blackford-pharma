@@ -20,7 +20,7 @@ const Channels = props => (
 const Users = props => (
   <div >
     {props.userList.map(user =>
-      <p className={styles.text} >{user.identity}</p>)}
+      <p className={styles.text} key={user.identity} >{user.identity}</p>)}
   </div>);
 
 export const SocialPanel = props => (

@@ -4,9 +4,8 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { SocialContainer } from './bSocialPanel';
 import ChatPanel, { EmptyContainer } from './bChatPanel';
-import { loadChannel } from './bChatActionThunks';
 import type { State } from '../types/State';
-import type { PaginatorItem, MessageItem, ChannelItem, MembersItem } from '../types/Twilio';
+import type { MessageItem, ChannelItem, MembersItem } from '../types/Twilio';
 
 type Props = {
   chatToken: string,
@@ -14,13 +13,13 @@ type Props = {
   sidebar: boolean,
   userList: Array<MembersItem>,
   channels: Array<ChannelItem>,
-  messages: PaginatorItem<MessageItem>,
+  messages: Array<MessageItem>,
   currentChannel: ChannelItem,
   goToken: () => void,
 };
 
 type ChatUX = {
-  scrollTop: number,
+  scrollTop?: number,
   scrollHeight: number,
   clientHeight: number,
 };
@@ -35,11 +34,15 @@ class MainDashboard extends React.PureComponent<Props> {
   componentWillUpdate(nextProps) {
     this.historyChanged = false;
     if (nextProps.messages) {
-      this.historyChanged = this.props.messages ? nextProps.messages.items.length !== this.props.messages.items.length : true;
+      this.historyChanged = this.props.messages
+        ? nextProps.messages.length !== this.props.messages.length
+        : true;
     }
     if (this.historyChanged) {
-      const chat: ChatUX = this.bChatTextArea;
-      const scrollPos: number = chat.scrollTop;
+      const chat: ChatUX = this.bChatTextArea
+        ? this.bChatTextArea
+        : { scrollHeight: 0, clientHeight: 0 };
+      const scrollPos = chat.scrollTop;
       this.scrollAtBottom = scrollPos === (chat.scrollHeight - chat.clientHeight);
     }
   }
@@ -56,8 +59,12 @@ class MainDashboard extends React.PureComponent<Props> {
     }
   }
 
+  historyChanged: boolean;
+  bChatTextArea: ?ChatUX;
+  scrollAtBottom: boolean;
+
   scrollToBottom() {
-    const chat: ChatUX = this.bChatTextArea;
+    const chat = this.bChatTextArea ? this.bChatTextArea : {};
     chat.scrollTop = chat.scrollHeight;
   }
 
@@ -68,7 +75,7 @@ class MainDashboard extends React.PureComponent<Props> {
         {this.props.currentChannel ? <ChatPanel
           channel={this.props.currentChannel}
           messages={this.props.messages}
-          inputRef={(el) => {
+          inputRef={(el: ?HTMLDivElement) => {
             this.bChatTextArea = el;
           }}
         /> : <EmptyContainer identity={this.props.identity} />
@@ -96,6 +103,9 @@ const mapDispatchToProps = {
   goToken: () => push('/token'),
 };
 
-const DashboardContainer = connect(mapStateToProps, mapDispatchToProps)(MainDashboard);
+const DashboardContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(MainDashboard);
 
 export default DashboardContainer;

@@ -13,6 +13,7 @@ import type { ChatState } from '../types/State';
 const initialState: ChatState = {
   sidebar: true,
   userList: [],
+  messages: [],
 };
 
 const chatReducer = (state: ChatState = initialState, action: Action): ChatState => {
@@ -26,9 +27,15 @@ const chatReducer = (state: ChatState = initialState, action: Action): ChatState
     case TOGGLE_SIDEBAR:
       return { ...state, sidebar: action.data };
     case UPDATE_MESSAGES:
-      return { ...state, messages: action.data }; // FIXME
+      return { ...state, messages: action.data };
     case NEW_MESSAGE:
-      return { ...state, messages: {...state.messages, items: [...state.messages.items, action.data]} }; // FIXME
+      return {
+        ...state,
+        messages: [
+          ...state.messages,
+          action.data,
+        ],
+      };
     default:
       return state;
   }

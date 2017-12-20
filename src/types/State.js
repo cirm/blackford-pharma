@@ -12,7 +12,7 @@ export type TokenState = {
 export type ChatState = {
     +sidebar: boolean,
     +userList: Array<MembersItem>,
-    +messages?: PaginatorItem<MessageItem>,
+    +messages: Array<MessageItem>,
     +currentChannel?: ChannelItem,
     +channels?: ChannelApiResponse,
   };

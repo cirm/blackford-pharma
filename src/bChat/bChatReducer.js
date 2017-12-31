@@ -7,13 +7,15 @@ import {
   UPDATE_USERS,
   TOGGLE_SIDEBAR,
 } from './bChatActionConstants';
+import { LOGOUT } from '../bToken/bTokenConstants';
 import type { Action } from '../types/Action';
-import type { ChatState } from '../types/State';
+import type{ ChatState } from '../types/State';
 
 const initialState: ChatState = {
   sidebar: true,
   userList: [],
   messages: [],
+  connectionState: 'disconnected',
 };
 
 const chatReducer = (state: ChatState = initialState, action: Action): ChatState => {
@@ -28,6 +30,10 @@ const chatReducer = (state: ChatState = initialState, action: Action): ChatState
       return { ...state, sidebar: action.data };
     case UPDATE_MESSAGES:
       return { ...state, messages: action.data };
+    case LOGOUT:
+      return { ...initialState };
+    case 'TWILIO/CONNECTION_STATE':
+      return { ...state, connectionState: action.data };
     case NEW_MESSAGE:
       return {
         ...state,

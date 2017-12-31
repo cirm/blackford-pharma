@@ -4,21 +4,21 @@ import { newMessage } from './bRemoteChannelActionCreators';
 import type { TwilioClient, ChannelItem } from '../types/Twilio';
 import type { Dispatch } from '../types/Action';
 
-const logger = data => console.log(data);
+const updateConnectionState = (data: string) => ({ type: 'TWILIO/CONNECTION_STATE', data });
 
 const remoteActionsMap = {
-  channelAdded: logger,
-  connectionStateChanged: logger,
-  channelJoined: logger,
-  channelInvited: logger,
-  channelUpdated: logger,
-  channelRemoved: logger,
-  channelLeft: logger,
+  // channelAdded: logger,
+  connectionStateChanged: updateConnectionState,
+  // channelJoined: logger,
+  // channelInvited: logger,
+  // channelUpdated: logger,
+  // channelRemoved: logger,
+  // channelLeft: logger,
 };
 
-export const mapRemoteChatActions = (chat: TwilioClient) =>
+export const mapRemoteChatActions = (chat: TwilioClient, dispatch: Dispatch) =>
   mapKeys((key: string) => {
-    chat.on(key, data => remoteActionsMap[key](data));
+    chat.on(key, (data) => { dispatch(remoteActionsMap[key](data)); });
   })(remoteActionsMap);
 
 
@@ -27,6 +27,8 @@ const remoteChannelActions = {
 };
 
 export const mapRemoteChannelActions = (channel: ChannelItem, dispatch: Dispatch) =>
-  mapKeys(key =>
-    channel.on(key, data =>
-      dispatch(remoteChannelActions[key](data))))(remoteChannelActions);
+  mapKeys((key: string) => {
+    channel.on(key, (data) => {
+      dispatch(remoteChannelActions[key](data));
+    });
+  })(remoteChannelActions);

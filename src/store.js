@@ -6,7 +6,8 @@ import { routerMiddleware } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 import reducers from './reducers';
 import checkRenewableTokens from './remote/bRemoteAuth';
-import { renewToken } from './remote/bRemoteActionThunks';
+import remoteActionsMiddleware from './remote/bTwilioMiddleware';
+import renewToken from './remote/bRemoteActionThunks';
 import type { UpdateTokenResponse } from './remote/bRemoteAuth';
 
 export const history = createHistory();
@@ -14,8 +15,7 @@ export const history = createHistory();
 const routerHistory = routerMiddleware(history);
 
 const logger = createLogger();
-const middlewares = [thunk];
-middlewares.push(routerHistory);
+const middlewares = [thunk, routerHistory, remoteActionsMiddleware];
 if (process.env.NODE_ENV !== 'production') {
   middlewares.push(logger);
 }

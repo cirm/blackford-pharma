@@ -10,6 +10,7 @@ export type TokenState = {
 };
 
 export type ChatState = {
+    +connectionState: 'disconnected' | 'connecting' | 'connected' | 'error' | 'denied',
     +sidebar: boolean,
     +userList: Array<MembersItem>,
     +messages: Array<MessageItem>,

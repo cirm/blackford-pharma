@@ -1,7 +1,7 @@
 import { push } from 'react-router-redux';
 import { postTokenApi } from './bTokenApi';
 import { updateTokens } from './bTokenActionCreators';
-import { connectChat } from '../remote/bRemoteActionThunks';
+import { connectChat } from '../remote/bRemoteActionCreators';
 
 export const fetchAccessTokens = payload => async (dispatch) => {
   try {

@@ -2,9 +2,18 @@
 import type { MessageItem, ChannelApiResponse } from '../types/Twilio';
 import { NEW_MESSAGE, UPDATE_CHANNELS, TWILIO_INVALID } from './bRemoteActionConstants';
 
-export const newMessage = (message: MessageItem, sid: string) => ({
+export const newMessage = (messageItem: MessageItem, sid: string) => ({
   type: NEW_MESSAGE,
-  data: { sid, message },
+  data: {
+    sid,
+    message: {
+      author: messageItem.author,
+      index: messageItem.index,
+      timestamp: messageItem.timestamp,
+      body: messageItem.body,
+      sid: messageItem.sid,
+    },
+  },
 });
 
 export const updateChannels = (data: ChannelApiResponse) => ({

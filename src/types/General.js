@@ -39,3 +39,11 @@ export type AuthPayload = {
   username: string,
   password: string,
 }
+
+export type ChatMessage = {
+  author: string,
+  sid: string,
+  timestamp: Date,
+  index: number,
+  body: string,
+}

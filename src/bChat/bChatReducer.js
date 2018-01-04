@@ -3,12 +3,13 @@ import {
   NEW_MESSAGE,
   UPDATE_CHANNELS,
   UPDATE_CHAT_CHANNEL,
-  UPDATE_MESSAGES,
   UPDATE_USERS,
   TOGGLE_SIDEBAR,
+  UPDATE_CHANNEL_MESSAGES,
 } from './bChatActionConstants';
 import { LOGOUT } from '../bToken/bTokenConstants';
 import type { Action } from '../types/Action';
+import type { ChatMessage } from '../types/General';
 import type{ ChatState } from '../types/State';
 
 const initialState: ChatState = {
@@ -22,12 +23,15 @@ const initialState: ChatState = {
 };
 
 const newChannel = (state, data) => state;
-const updateChannelMessages = (state, data) => ({ ...state, channelMessages: { ...{ [data.channel]: data.messages }, ...state.channelMessages } });
-const addNewMessage = (state, data) => {
+const updateChannelMessages = (state: ChatState, data: {channelSid: string, messages: Array<ChatMessage>}): ChatState => ({
+  ...state,
+  channelMessages: { ...{ [data.channelSid]: data.messages }, ...state.channelMessages },
+});
+const addNewMessage = (state: ChatState, data: {sid: string, message: ChatMessage}): ChatState => {
   if (data.sid in state.channelMessages) {
-    return { ...state, channelMessages: { ...state.channelMessages, [data.sid]: [...state.channelMessages[data.sid], ...data.message] } };
+    return { ...state, channelMessages: { ...state.channelMessages, [data.sid]: [...state.channelMessages[data.sid], data.message] } };
   }
-  return { ...state, channelMessages: { ...state.channelMessages, [data.sid]: [...data.message] } };
+  return { ...state, channelMessages: { ...state.channelMessages, [data.sid]: [data.message] } };
 };
 
 const chatReducer = (state: ChatState = initialState, action: Action): ChatState => {
@@ -40,10 +44,8 @@ const chatReducer = (state: ChatState = initialState, action: Action): ChatState
       return { ...state, currentChannel: action.data };
     case TOGGLE_SIDEBAR:
       return { ...state, sidebar: action.data };
-    case 'UPDATE_CHANNEL_MESSAGES':
+    case UPDATE_CHANNEL_MESSAGES:
       return updateChannelMessages(state, action.data);
-    case UPDATE_MESSAGES:
-      return { ...state, messages: action.data };
     case LOGOUT:
       return { ...initialState };
     case 'TWILIO/CHANNEL_ADDED':

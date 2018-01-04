@@ -25,6 +25,11 @@ const connectChat = async (tokens: Tokens, dispatch: Dispatch) => {
   }
 };
 
+const getPublicChannels = async (tc, dispatch) => {
+  const publicChats = await tc.getSubscribedChannels();
+  dispatch({ type: 'PUBLIC_CHANNELS', data: publicChats });
+};
+
 const updateTwilioChannels = async (tc: TwilioClient, dispatch: Dispatch) => {
   const channels: Array<ChannelPaginator<ChannelDescriptor>> = await Promise.all([
     tc.getUserChannelDescriptors(), tc.getPublicChannelDescriptors(),
@@ -53,7 +58,8 @@ const middleware = store => next => async (action: Action) => {
           client = undefined;
           return next(action);
         case TCREATE_CHANNEL:
-          await client.createChannel({ uniqueName: action.data.name, isPrivate: action.data.isPrivate });
+          console.log(action.data);
+          await client.createChannel({ uniqueName: action.data.chatName, friendlyName: action.data.chatName, isPrivate: action.data.isPrivate });
           return next(action);
         case 'TWILIO/UPDATE_TOKEN':
           console.log('updateToken');

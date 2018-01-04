@@ -2,8 +2,8 @@
 import type { State } from './State';
 import { toggleSidebar, updateChatChannel, updateMessages, updateUsers } from '../bChat/bChatActionCreators';
 import { updateTokens } from '../bToken/bTokenActionCreators';
-import { newMessage, twilioInvalid } from '../remote/bRemoteChannelActionCreators';
-import { logout, getChannels, createChannel } from '../remote/bRemoteActionCreators';
+import { newMessage, updateChannels, twilioInvalid } from '../remote/bRemoteChannelActionCreators';
+import { logout } from '../remote/bRemoteActionCreators';
 
 // https://hackernoon.com/redux-flow-type-getting-the-maximum-benefit-from-the-fewest-key-strokes-5c006c54ec87
 type _ExtractReturn<B, F: (...args: any[]) => B> = B;
@@ -18,8 +18,6 @@ export type Action =
   ExtractReturn<typeof twilioInvalid> |
   ExtractReturn<typeof newMessage> |
   ExtractReturn<typeof logout> |
-  ExtractReturn<typeof getChannels> |
-  ExtractReturn<typeof createChannel> |
   ExtractReturn<typeof updateTokens>;
 
 export type Dispatch = (action: Action | ThunkAction) => void;

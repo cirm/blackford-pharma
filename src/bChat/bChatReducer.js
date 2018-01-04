@@ -15,7 +15,19 @@ const initialState: ChatState = {
   sidebar: true,
   userList: [],
   messages: [],
+  currentChannel: undefined,
+  channelMessages: {},
+  channelMembers: {},
   connectionState: 'disconnected',
+};
+
+const newChannel = (state, data) => state;
+const updateChannelMessages = (state, data) => ({ ...state, channelMessages: { ...{ [data.channel]: data.messages }, ...state.channelMessages } });
+const addNewMessage = (state, data) => {
+  if (data.sid in state.channelMessages) {
+    return { ...state, channelMessages: { ...state.channelMessages, [data.sid]: [...state.channelMessages[data.sid], ...data.message] } };
+  }
+  return { ...state, channelMessages: { ...state.channelMessages, [data.sid]: [...data.message] } };
 };
 
 const chatReducer = (state: ChatState = initialState, action: Action): ChatState => {
@@ -28,20 +40,18 @@ const chatReducer = (state: ChatState = initialState, action: Action): ChatState
       return { ...state, currentChannel: action.data };
     case TOGGLE_SIDEBAR:
       return { ...state, sidebar: action.data };
+    case 'UPDATE_CHANNEL_MESSAGES':
+      return updateChannelMessages(state, action.data);
     case UPDATE_MESSAGES:
       return { ...state, messages: action.data };
     case LOGOUT:
       return { ...initialState };
+    case 'TWILIO/CHANNEL_ADDED':
+      return newChannel(state, action.data);
     case 'TWILIO/CONNECTION_STATE':
       return { ...state, connectionState: action.data };
     case NEW_MESSAGE:
-      return {
-        ...state,
-        messages: [
-          ...state.messages,
-          action.data,
-        ],
-      };
+      return addNewMessage(state, action.data);
     default:
       return state;
   }

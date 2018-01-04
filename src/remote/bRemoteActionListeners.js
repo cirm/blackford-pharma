@@ -1,13 +1,13 @@
 // @flow
-import mapKeys from 'lodash/fp/mapKeys';
 import { newMessage } from './bRemoteChannelActionCreators';
 import type { TwilioClient, ChannelItem } from '../types/Twilio';
 import type { Dispatch } from '../types/Action';
 
 const updateConnectionState = (data: string) => ({ type: 'TWILIO/CONNECTION_STATE', data });
+const newChannel = (data: string) => ({ type: 'TWILIO/CHANNEL_ADDED', data });
 
 const remoteActionsMap = {
-  // channelAdded: logger,
+  channelAdded: newChannel,
   connectionStateChanged: updateConnectionState,
   // channelJoined: logger,
   // channelInvited: logger,
@@ -17,18 +17,24 @@ const remoteActionsMap = {
 };
 
 export const mapRemoteChatActions = (chat: TwilioClient, dispatch: Dispatch) =>
-  mapKeys((key: string) => {
+  Object.keys(remoteActionsMap).forEach((key: string) => {
     chat.on(key, (data) => { dispatch(remoteActionsMap[key](data)); });
-  })(remoteActionsMap);
+  });
 
 
 const remoteChannelActions = {
   messageAdded: newMessage,
 };
 
-export const mapRemoteChannelActions = (channel: ChannelItem, dispatch: Dispatch) =>
-  mapKeys((key: string) => {
-    channel.on(key, (data) => {
-      dispatch(remoteChannelActions[key](data));
+const mappedChannels = new Set();
+
+export const mapRemoteChannelActions = (channel: ChannelItem, dispatch: Dispatch) => {
+  if (!mappedChannels.has(channel.sid)) {
+    Object.keys(remoteChannelActions).forEach((key: string) => {
+      channel.on(key, (data) => {
+        dispatch(remoteChannelActions[key](data, channel.sid));
+      });
     });
-  })(remoteChannelActions);
+    mappedChannels.add(channel.sid);
+  }
+};

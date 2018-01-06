@@ -1,5 +1,5 @@
 // @flow
-import type { ChannelApiResponse, ChannelItem, MessageItem, MembersItem } from './Twilio';
+import type { ChannelApiResponse, ChannelItem, MembersItem } from './Twilio';
 import type { ChatMessage } from './General';
 
 export type TokenState = {
@@ -14,7 +14,6 @@ export type ChatState = {
     +connectionState: 'disconnected' | 'connecting' | 'connected' | 'error' | 'denied',
     +sidebar: boolean,
     +userList: Array<MembersItem>,
-    +messages: Array<MessageItem>,
     +currentChannel?: ChannelItem,
     +channelMessages: {[key: ?string]: Array<ChatMessage>},
     +channels?: ChannelApiResponse,

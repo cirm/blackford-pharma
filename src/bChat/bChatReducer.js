@@ -15,7 +15,6 @@ import type{ ChatState } from '../types/State';
 const initialState: ChatState = {
   sidebar: true,
   userList: [],
-  messages: [],
   currentChannel: undefined,
   channelMessages: {},
   channelMembers: {},

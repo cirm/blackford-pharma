@@ -1,12 +1,12 @@
 import { push } from 'react-router-redux';
 import { postTokenApi } from './bTokenApi';
 import { updateTokens } from './bTokenActionCreators';
-import { connectChat } from '../remote/bRemoteActionCreators';
+import { connectClient } from '../remote/bRemoteActionThunks';
 
-export const fetchAccessTokens = payload => async (dispatch) => {
+const fetchAccessTokens = payload => async (dispatch) => {
   try {
     const tokens = await postTokenApi({ ...payload, device: 'browser' });
-    dispatch(connectChat(tokens));
+    dispatch(connectClient(tokens));
     dispatch(updateTokens(tokens));
     dispatch(push('/'));
   } catch (e) {
@@ -14,3 +14,6 @@ export const fetchAccessTokens = payload => async (dispatch) => {
     console.log(e);
   }
 };
+
+export default fetchAccessTokens;
+

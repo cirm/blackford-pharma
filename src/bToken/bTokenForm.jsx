@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { push } from 'react-router-redux';
 import { Field, reduxForm } from 'redux-form';
 import Button from '../components/Button';
-import { fetchAccessTokens } from './bTokenActionThunks';
+import fetchAccessTokens from './bTokenActionThunks';
 import styles from './formStyle.styl';
 
 const renderInput = field => (

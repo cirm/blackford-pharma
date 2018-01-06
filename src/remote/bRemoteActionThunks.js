@@ -37,7 +37,7 @@ export const renewToken = (apiToken: string): ThunkAction => async (dispatch: Di
   try {
     tokens = await putTokenApi({ apiToken });
   } catch (e) {
-    console.log(e.toString());
+    dispatch({ type: 'SERVER/TOKEN_ERROR', data: e });
   }
   if (!tokens) return;
   dispatch(updateTokens(tokens));
@@ -47,7 +47,11 @@ export const renewToken = (apiToken: string): ThunkAction => async (dispatch: Di
 export const createTwilioChannel = (payload): ThunkAction => async (dispatch, getState) => {
   const state = getState();
   if (state.remote.connectionState === 'connected') {
-    await state.remote.client.createChannel({ uniqueName: payload.chatName, friendlyName: payload.chatName, isPrivate: payload.isPrivate });
+    await state.remote.client.createChannel({
+      uniqueName: payload.chatName,
+      friendlyName: payload.chatName,
+      isPrivate: payload.isPrivate,
+    });
     dispatch(updateTwilioChannels());
   }
 };

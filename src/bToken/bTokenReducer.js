@@ -26,11 +26,12 @@ const updateTokens = (state: TokenState, data: TokenApiResponse): TokenState => 
 const getInitialState = (state: TokenState = {}): TokenState => {
   const tempChatToken = localStorage.getItem(chatTokenKey);
   const tempApiToken = localStorage.getItem(apiTokenKey);
+  console.log(tempChatToken === 'undefined');
 
-  if (!tempChatToken || !tempApiToken) {
+  if (!tempChatToken || !tempApiToken || tempChatToken === 'undefined' || apiTokenKey === 'undefined') {
     return {
       ...state,
-    }
+    };
   }
 
   const chatToken: string = JSON.parse(tempChatToken);

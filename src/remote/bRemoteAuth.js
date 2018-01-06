@@ -11,7 +11,7 @@ const checkRenewableTokens = (): UpdateTokenResponse => {
 
   const tempChatToken = localStorage.getItem(chatTokenKey);
   const tempApiToken = localStorage.getItem(apiTokenKey);
-  if (!tempChatToken || !tempApiToken) {
+  if (!tempChatToken || !tempApiToken || tempChatToken === 'undefined' || tempApiToken === 'undefined') {
     return { renewable: false };
   }
   const apiToken: string = JSON.parse(tempApiToken);

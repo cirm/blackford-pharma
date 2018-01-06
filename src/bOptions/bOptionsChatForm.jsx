@@ -1,6 +1,6 @@
 import React from 'react';
 import { reduxForm, Field, reset } from 'redux-form';
-import createNewChat from './bOptionsActionCreators';
+import { createTwilioChannel } from '../remote/bRemoteActionThunks';
 
 const renderInput = field => (
   <div>
@@ -17,7 +17,7 @@ const chatForm = (props) => {
   } = props;
   return (
     <form onSubmit={handleSubmit((val) => {
-      dispatch(createNewChat(val.createChat, type === 'public'));
+      dispatch(createTwilioChannel({ chatName: val.createChat, isPublic: type === 'public' }));
       dispatch(reset(form));
     })}
     >

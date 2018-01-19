@@ -8,7 +8,7 @@ import { toggleSidebar } from './bChatActionCreators';
 import type { State } from '../types/State';
 
 const Channels = props => (
-  <div >{props.channels ? props.channels.private.items.map(channel => (
+  <div >{props.channels ? props.channels.public.items.map(channel => (
     <p
       key={channel.sid}
       onClick={() => { props.loadChannel(channel); }}
@@ -16,6 +16,14 @@ const Channels = props => (
     >
       {channel.friendlyName}
     </p>)) : null}
+    {props.channels ? props.channels.private.items.map(channel => (
+      <p
+        key={channel.sid}
+        onClick={() => { props.loadChannel(channel); }}
+        className={styles.text}
+      >
+        {channel.friendlyName}
+      </p>)) : null}
   </div>);
 
 const Users = props => (
@@ -31,7 +39,7 @@ export const SocialPanel = props => (
       : <div>
         <Button onClick={() => { props.toggleSidebar(true); }}>Channels</Button>
         <Users userList={props.userList} />
-        </div>}
+      </div>}
   </div>
 );
 

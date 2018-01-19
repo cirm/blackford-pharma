@@ -15,6 +15,8 @@ function remoteTwilioClientReducer(state = getInitialState(), action: Action) {
       return updateConnectionClient(state, action.data);
     case 'TWILIO/UPDATE_TOKEN':
       return state;
+    case 'TWILIO/CONNECTION_STATE':
+      return { ...state, connectionState: action.data };
     case LOGOUT:
       return getInitialState();
     case TGET_CHANNELS:

@@ -13,7 +13,7 @@ type Props = {
 
 const chatContainer = (props: Props) => (
   <div
-    className={styles.chat__container}
+    className={styles.chat__panel}
   >
     <ChatText channel={props.channel} messages={props.messages} inputRef={props.inputRef} />
     <ChatInput channel={props.channel} />

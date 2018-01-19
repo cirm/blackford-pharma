@@ -49,8 +49,6 @@ const chatReducer = (state: ChatState = initialState, action: Action): ChatState
       return { ...initialState };
     case 'TWILIO/CHANNEL_ADDED':
       return newChannel(state, action.data);
-    case 'TWILIO/CONNECTION_STATE':
-      return { ...state, connectionState: action.data };
     case NEW_MESSAGE:
       return addNewMessage(state, action.data);
     default:

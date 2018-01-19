@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { SocialContainer } from './bSocialPanel';
 import ChatPanel, { EmptyContainer } from './bChatPanel';
+import * as styles from './bChatDashboard.styl';
 import type { State } from '../types/State';
 import type { MessageItem, ChannelItem, MembersItem } from '../types/Twilio';
 
@@ -71,7 +72,7 @@ class MainDashboard extends React.PureComponent<Props> {
 
   render() {
     return (
-      <div style={{ display: 'flex', flex: '1 1 auto' }}>
+      <div className={styles.chat__container}>
         {this.props.currentChannel ? <ChatPanel
           channel={this.props.currentChannel}
           messages={this.props.messages}
@@ -83,7 +84,6 @@ class MainDashboard extends React.PureComponent<Props> {
         <SocialContainer
           userList={this.props.userList}
           showChannels={this.props.sidebar}
-          channelList={this.props.channels}
         />
       </div>);
   }
@@ -94,7 +94,6 @@ const mapStateToProps = (state: State) => ({
   chatToken: state.token.chatToken,
   sidebar: state.chat.sidebar,
   userList: state.chat.userList,
-  channels: state.chat.channels,
   currentChannel: state.chat.currentChannel,
   messages: state.chat.channelMessages[state.chat.currentChannel ? state.chat.currentChannel.sid : undefined] || [],
 });

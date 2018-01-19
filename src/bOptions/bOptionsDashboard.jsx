@@ -64,7 +64,7 @@ const mapStateToProps = (state: State) => ({
   identity: state.token.identity,
   chatToken: state.token.chatToken,
   chats: state.chat.channels,
-  connectionState: state.chat.connectionState,
+  connectionState: state.remote.connectionState,
 });
 
 const mapDispatchToProps = {

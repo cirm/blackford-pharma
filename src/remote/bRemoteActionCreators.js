@@ -6,19 +6,7 @@ export const logout = () => ({
   type: LOGOUT,
 });
 
-export const createChannel = (name: string) => ({
-  type: TCREATE_CHANNEL,
-  data: name,
-  meta: { twilio: true },
-});
-
 export const getChannels = () => ({
   type: TGET_CHANNELS,
-  meta: { twilio: true },
-});
-
-export const connectChat = (tokens: Tokens) => ({
-  type: TCONNECT,
-  data: tokens,
   meta: { twilio: true },
 });

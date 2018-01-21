@@ -5,4 +5,5 @@ declare module.exports: {|
   +'button': string;
   +'form': string;
   +'formButtons': string;
+  +'inputDiv': string;
 |};

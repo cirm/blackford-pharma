@@ -25,7 +25,7 @@ type EmptyProps = {
 }
 
 export const EmptyContainer = (props: EmptyProps) => (
-  <div className={styles.chat__container} style={{ color: 'red' }} >
+  <div className={styles.chat__panel} style={{ color: 'red', padding: '10px' }} >
     Welcome, {props.identity}! Pick a Channel to Join --&gt;&gt;
   </div>);
 

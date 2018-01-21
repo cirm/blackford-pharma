@@ -7,12 +7,12 @@ import fetchAccessTokens from './bTokenActionThunks';
 import styles from './formStyle.styl';
 
 const renderInput = field => (
-  <div >
+  <div className={styles.inputDiv}>
     <input {...field.input} type={field.type} label={field.label} />
     {field.meta.touched &&
     field.meta.error &&
-    <span className="error" >{field.meta.error}</span >}
-  </div >
+    <span className="error" >{field.meta.error}</span>}
+  </div>
 );
 
 const triggerLogin = (values, dispatch) => {

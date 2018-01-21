@@ -36,22 +36,22 @@ class OptionsDashboard extends React.PureComponent<propTypes> {
     return (
       <div className={styles.dashboard}>
         { this.isConnected() ?
-          <div>
-            <div>
+          <div className={styles.optionsColumn}>
+            <div style={{ 'grid-row': 1 }}>
               <p>Create new public chat</p>
               <PublicChatForm />
             </div>
-            <div>
+            <div style={{ 'grid-row': 2 }}>
               <p>Create new private chat</p>
               <PrivateChatForm />
             </div>
           </div> : null}
-        <div>
-          <div>
+        <div className={styles.optionsColumn}>
+          <div style={{ 'grid-row': 1 }}>
             <p >Owned chats</p>
             <div>{this.getChats('private').map(chat => <p key={chat.sid}>{chat.friendlyName}</p>)}</div>
           </div>
-          <div>
+          <div style={{ 'grid-column': 2 }}>
             <p >Joined chats</p>
             <div>{this.getChats('public').map(chat => <p key={chat.sid}>{chat.friendlyName}</p>)}</div>
           </div>

@@ -1,26 +1,27 @@
+// @flow
 
-import { LOGOUT, TCONNECT, TCREATE_CHANNEL, TGET_CHANNELS } from './bRemoteActionConstants';
+import { LOGOUT, TCONNECTED, TCONSTATE, TUPDATETOKEN } from './bRemoteActionConstants';
+import type { RemoteState } from '../types/State';
+import type { Action } from '../types/Action';
 
-const getInitialState = () => ({ client: undefined, connectionState: 'disconnected' });
+const getInitialState = () => ({ connectionState: 'disconnected' });
 
 const updateConnectionClient = (state, data) => ({
   ...state,
-  client: data.client,
-  connectionState: data.client.connectionState,
+  client: data,
+  connectionState: data.connectionState,
 });
 
-function remoteTwilioClientReducer(state = getInitialState(), action: Action) {
+function remoteTwilioClientReducer(state: RemoteState = getInitialState(), action: Action): RemoteState {
   switch (action.type) {
-    case 'TWILIO/CLIENT_CONNECTED':
+    case TCONNECTED:
       return updateConnectionClient(state, action.data);
-    case 'TWILIO/UPDATE_TOKEN':
+    case TUPDATETOKEN:
       return state;
-    case 'TWILIO/CONNECTION_STATE':
+    case TCONSTATE:
       return { ...state, connectionState: action.data };
     case LOGOUT:
       return getInitialState();
-    case TGET_CHANNELS:
-      return state;
     default:
       return state;
   }

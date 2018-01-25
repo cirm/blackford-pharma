@@ -5,18 +5,20 @@ import { push } from 'react-router-redux';
 import { SocialContainer } from './bSocialPanel';
 import ChatPanel, { EmptyContainer } from './bChatPanel';
 import * as styles from './bChatDashboard.styl';
+import { updateTwilioChannels } from '../remote/bRemoteActionThunks';
 import type { State } from '../types/State';
 import type { MessageItem, ChannelItem, MembersItem } from '../types/Twilio';
+import type { ChatMessage } from '../types/General';
 
 type Props = {
   chatToken: string,
   identity?: string,
   sidebar: boolean,
   userList: Array<MembersItem>,
-  channels: Array<ChannelItem>,
-  messages: Array<MessageItem>,
+  messages: Array<ChatMessage>,
   currentChannel: ChannelItem,
   goToken: () => void,
+  updateTwilioChannels: () => void,
 };
 
 type ChatUX = {
@@ -30,6 +32,7 @@ class MainDashboard extends React.PureComponent<Props> {
     if (!this.props.identity && !this.props.chatToken) {
       this.props.goToken();
     }
+    this.props.updateTwilioChannels();
   }
 
   componentWillUpdate(nextProps) {
@@ -100,6 +103,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = {
   goToken: () => push('/token'),
+  updateTwilioChannels: () => updateTwilioChannels(),
 };
 
 const DashboardContainer = connect(

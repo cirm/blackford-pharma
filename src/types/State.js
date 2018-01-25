@@ -1,5 +1,5 @@
 // @flow
-import type { ChannelApiResponse, ChannelItem, MembersItem } from './Twilio';
+import type { ChannelApiResponse, ChannelItem, MembersItem, TwilioClient } from './Twilio';
 import type { ChatMessage } from './General';
 
 export type TokenState = {
@@ -11,7 +11,6 @@ export type TokenState = {
 };
 
 export type ChatState = {
-    +connectionState: 'disconnected' | 'connecting' | 'connected' | 'error' | 'denied',
     +sidebar: boolean,
     +userList: Array<MembersItem>,
     +currentChannel?: ChannelItem,
@@ -25,8 +24,14 @@ export type RouterState = {
   },
 };
 
+export type RemoteState = {
+  connectionState: 'disconnected' | 'connecting' | 'connected' | 'error' | 'denied',
+  +client?: TwilioClient,
+}
+
 export type State = {
   chat: ChatState,
   token: TokenState,
   router: RouterState,
+  remote: RemoteState,
 };

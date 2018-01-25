@@ -47,3 +47,8 @@ export type ChatMessage = {
   index: number,
   body: string,
 }
+
+export type NewChannel = {
+  isPrivate: boolean,
+  channelName: string,
+}

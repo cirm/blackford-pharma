@@ -3,11 +3,12 @@ import React from 'react';
 import ChatInput from './components/bChatInput';
 import ChatText from './components/bChatTextArea';
 import styles from './bChatPanel.styl';
-import type { MessageItem, ChannelItem } from '../types/Twilio';
+import type { ChannelItem } from '../types/Twilio';
+import type { ChatMessage } from '../types/General';
 
 type Props = {
   channel: ChannelItem,
-  messages: Array<MessageItem>,
+  messages: Array<ChatMessage>,
   inputRef: (el: ?HTMLDivElement) => void,
 };
 
@@ -25,7 +26,7 @@ type EmptyProps = {
 }
 
 export const EmptyContainer = (props: EmptyProps) => (
-  <div className={styles.chat__panel} style={{ color: 'red', padding: '10px' }} >
+  <div className={styles.empty__container} >
     Welcome, {props.identity}! Pick a Channel to Join --&gt;&gt;
   </div>);
 

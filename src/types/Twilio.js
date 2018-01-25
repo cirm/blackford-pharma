@@ -98,7 +98,10 @@ export type MessageItem = {
 
 
 export type ChannelDescriptor = {
-  getChannel: () => Promise<ChannelItem>
+  getChannel: () => Promise<ChannelItem>,
+  sid: string,
+  friendlyName: string,
+  uniqueName: string,
 };
 
 export type TwilioClient = {
@@ -116,6 +119,7 @@ export type TwilioClient = {
   getChannelByUniqueName: (uniqueName: string) => Promise<ChannelItem>,
   getUser: (identity: string) => Promise<UserItem>,
   create: (token: string) => Promise<TwilioClient>,
+  createChannel: ({uniqueName: string, friendlyName: string, isPrivate: boolean}) => Promise<ChannelItem>,
 };
 
 export type ChannelApiResponse = {

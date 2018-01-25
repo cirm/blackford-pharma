@@ -5,9 +5,15 @@ import Button from '../components/Button';
 import styles from './bSocialPanel.styl';
 import loadChannel from './bChatActionThunks';
 import { toggleSidebar } from './bChatActionCreators';
+import type { MembersItem, ChannelApiResponse, ChannelDescriptor } from '../types/Twilio';
 import type { State } from '../types/State';
 
-const Channels = props => (
+type ChannelsProps = {
+  channels: ChannelApiResponse,
+  loadChannel: (data: ChannelDescriptor) => void
+};
+
+const Channels = (props: ChannelsProps) => (
   <div >{props.channels ? props.channels.public.items.map(channel => (
     <p
       key={channel.sid}
@@ -26,13 +32,25 @@ const Channels = props => (
       </p>)) : null}
   </div>);
 
-const Users = props => (
+type UsersProps = {
+  userList: Array<MembersItem>,
+};
+
+const Users = (props: UsersProps) => (
   <div >
     {props.userList.map(user =>
       <p className={styles.text} key={user.identity} >{user.identity}</p>)}
   </div>);
 
-export const SocialPanel = props => (
+type SocialPanelProps = {
+  showChannels: boolean,
+  userList: Array<MembersItem>,
+  channels: ChannelApiResponse,
+  loadChannel: (data: ChannelDescriptor) => void,
+  toggleSidebar: (data: boolean) => void,
+};
+
+export const SocialPanel = (props: SocialPanelProps) => (
   <div className={styles.panelStyle}>
     {props.showChannels
       ? <Channels loadChannel={props.loadChannel} channels={props.channels} />

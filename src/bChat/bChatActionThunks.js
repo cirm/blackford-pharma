@@ -2,7 +2,7 @@
 
 import { mapRemoteChannelActions } from '../remote/bRemoteActionListeners';
 import { toggleSidebar, updateChatChannel, updateUsers, updateChannelMessages } from './bChatActionCreators';
-import { getChannels } from '../remote/bRemoteActionCreators';
+import { updateTwilioChannels } from '../remote/bRemoteActionThunks';
 import type { ThunkAction } from '../types/Action';
 import type { ChatMessage } from '../types/General';
 import type { ChannelDescriptor, ChannelItem } from '../types/Twilio';
@@ -15,7 +15,7 @@ const loadChannel = (channelDescriptor: ChannelDescriptor): ThunkAction => async
   if (Channel.status !== 'joined') {
     Channel = await Channel.join();
   }
-  dispatch(getChannels());
+  dispatch(updateTwilioChannels());
   mapRemoteChannelActions(Channel, dispatch);
   const Messages = await Channel.getMessages(1000);
   const messages: ChatMessage[] = Messages.items.map(Message => ({

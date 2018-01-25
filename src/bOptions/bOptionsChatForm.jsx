@@ -17,7 +17,7 @@ const chatForm = (props) => {
   } = props;
   return (
     <form onSubmit={handleSubmit((val) => {
-      dispatch(createTwilioChannel({ chatName: val.createChat, isPublic: type === 'public' }));
+      dispatch(createTwilioChannel({ channelName: val.createChat, isPublic: type === 'public' }));
       dispatch(reset(form));
     })}
     >

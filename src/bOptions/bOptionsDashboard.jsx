@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import * as styles from './bOptionsDashboard.styl';
+import styles from './bOptionsDashboard.styl';
 import { PrivateChatForm, PublicChatForm } from './bOptionsChatForm';
 import type { State } from '../types/State';
 import type { ChannelItem, PaginatorItem } from '../types/Twilio';

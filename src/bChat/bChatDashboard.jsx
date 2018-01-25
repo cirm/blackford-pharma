@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { SocialContainer } from './bSocialPanel';
 import ChatPanel, { EmptyContainer } from './bChatPanel';
-import * as styles from './bChatDashboard.styl';
+import styles from './bChatDashboard.styl';
 import { updateTwilioChannels } from '../remote/bRemoteActionThunks';
 import type { State } from '../types/State';
-import type { MessageItem, ChannelItem, MembersItem } from '../types/Twilio';
+import type { ChannelItem, MembersItem } from '../types/Twilio';
 import type { ChatMessage } from '../types/General';
 
 type Props = {

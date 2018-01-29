@@ -17,7 +17,8 @@ export const updateTwilioChannels = (): ThunkAction => async (dispatch: Dispatch
   const state = getState();
   if (connectedStatuses.includes(state.remote.connectionState) && state.remote.client) {
     const channels: Array<ChannelPaginator<ChannelDescriptor>> = await Promise.all([
-      state.remote.client.getUserChannelDescriptors(), state.remote.client.getPublicChannelDescriptors(),
+      state.remote.client.getUserChannelDescriptors(),
+      state.remote.client.getPublicChannelDescriptors(),
     ]);
     dispatch(updateChannels({ private: channels[0].state, public: channels[1].state }));
   }

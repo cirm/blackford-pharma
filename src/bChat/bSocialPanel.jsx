@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Button from '../components/Button';
 import styles from './bSocialPanel.styl';
-import loadChannel from './bChatActionThunks';
+import { loadChannel } from './bChatActionThunks';
 import { toggleSidebar } from './bChatActionCreators';
 import type { MembersItem, ChannelApiResponse, ChannelDescriptor } from '../types/Twilio';
 import type { State } from '../types/State';

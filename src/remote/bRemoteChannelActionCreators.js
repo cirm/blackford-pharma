@@ -24,3 +24,17 @@ export const updateChannels = (data: ChannelApiResponse) => ({
 export const twilioInvalid = () => ({
   type: TWILIO_INVALID,
 });
+
+export const newSystemMessage = (messageItem, sid: string) => ({
+  type: NEW_MESSAGE,
+  data: {
+    sid,
+    message: {
+      author: messageItem.author,
+      index: messageItem.index,
+      timestamp: messageItem.timestamp,
+      body: messageItem.body,
+      sid: messageItem.sid,
+    },
+  },
+});

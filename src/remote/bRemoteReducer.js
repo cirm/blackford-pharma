@@ -12,7 +12,7 @@ const updateConnectionClient = (state, data) => ({
   connectionState: data.connectionState,
 });
 
-function remoteTwilioClientReducer(state: RemoteState = getInitialState(), action: Action): RemoteState {
+function twilioClientReducer(state: RemoteState = getInitialState(), action: Action): RemoteState {
   switch (action.type) {
     case TCONNECTED:
       return updateConnectionClient(state, action.data);
@@ -27,4 +27,4 @@ function remoteTwilioClientReducer(state: RemoteState = getInitialState(), actio
   }
 }
 
-export default remoteTwilioClientReducer;
+export default twilioClientReducer;

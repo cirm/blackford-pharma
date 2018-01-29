@@ -98,7 +98,9 @@ const mapStateToProps = (state: State) => ({
   sidebar: state.chat.sidebar,
   userList: state.chat.userList,
   currentChannel: state.chat.currentChannel,
-  messages: state.chat.channelMessages[state.chat.currentChannel ? state.chat.currentChannel.sid : undefined] || [],
+  messages: state.chat.channelMessages[state.chat.currentChannel
+    ? state.chat.currentChannel.sid
+    : undefined] || [],
 });
 
 const mapDispatchToProps = {

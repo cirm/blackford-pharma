@@ -1,13 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Field, reduxForm, reset } from 'redux-form';
+import { inviteUsers2Channel, unkCommand, kickUsersFromChannel } from '../bChatActionThunks';
 import styles from './bChatInput.styl';
 
 let dispatch;
 let channel;
 
 const logField = (input) => {
-  channel.sendMessage(input.text);
+  if (/\/\w+\s.*/.test(input.text)) {
+    const command = input.text.split(' ');
+    if (command[0] === '/invite') {
+      dispatch(inviteUsers2Channel(command.slice(1)));
+    } else if (command[0] === '/kick') {
+      dispatch(kickUsersFromChannel(command.slice(1)));
+    } else {
+      dispatch(unkCommand());
+    }
+  } else {
+    channel.sendMessage(input.text);
+  }
   dispatch(reset('ChatForm'));
 };
 
@@ -35,13 +46,6 @@ const chatForm = (props) => {
       </div>
     </form>
   );
-};
-
-chatForm.propTypes = {
-  handleSubmit: PropTypes.func,
-  dispatch: PropTypes.func,
-  pristine: PropTypes.bool,
-  submitting: PropTypes.bool,
 };
 
 export default reduxForm({

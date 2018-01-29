@@ -1,5 +1,6 @@
 // @flow
 import { newMessage } from './bRemoteChannelActionCreators';
+import { updateUsersAfterEvent } from '../bChat/bChatActionThunks';
 import type { TwilioClient, ChannelItem } from '../types/Twilio';
 import type { Dispatch } from '../types/Action';
 
@@ -24,6 +25,8 @@ export const mapRemoteChatActions = (chat: TwilioClient, dispatch: Dispatch) =>
 
 const remoteChannelActions = {
   messageAdded: newMessage,
+  memberJoined: updateUsersAfterEvent,
+  memberLeft: updateUsersAfterEvent,
 };
 
 const mappedChannels = new Set();

@@ -4,6 +4,7 @@ import { updateUsersAfterEvent } from '../bChat/bChatActionThunks';
 import type { TwilioClient, ChannelItem } from '../types/Twilio';
 import type { Dispatch } from '../types/Action';
 
+const logger = (payload) => { console.log(payload); };
 const updateConnectionState = (data: string) => ({ type: 'TWILIO/CONNECTION_STATE', data });
 const newChannel = (data: string) => ({ type: 'TWILIO/CHANNEL_ADDED', data });
 
@@ -11,9 +12,9 @@ const remoteActionsMap = {
   channelAdded: newChannel,
   connectionStateChanged: updateConnectionState,
   // channelJoined: logger,
-  // channelInvited: logger,
+  channelInvited: logger,
   // channelUpdated: logger,
-  // channelRemoved: logger,
+  channelRemoved: logger,
   // channelLeft: logger,
 };
 

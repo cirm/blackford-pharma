@@ -6,9 +6,11 @@ import { connectClient } from '../remote/bRemoteActionThunks';
 const fetchAccessTokens = payload => async (dispatch) => {
   try {
     const tokens = await postTokenApi({ ...payload, device: 'browser' });
-    dispatch(connectClient(tokens));
-    dispatch(updateTokens(tokens));
-    dispatch(push('/'));
+    if (!tokens.error) {
+      dispatch(connectClient(tokens));
+      dispatch(updateTokens(tokens));
+      dispatch(push('/'));
+    }
   } catch (e) {
     console.log('ERROR 123123');
     console.log(e);

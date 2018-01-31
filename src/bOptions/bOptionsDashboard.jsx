@@ -37,22 +37,25 @@ class OptionsDashboard extends React.PureComponent<propTypes> {
         { this.isConnected() ?
           <div className={styles.optionsColumn}>
             <div style={{ gridRow: 1 }}>
-              <p>Create new public chat</p>
-              <PublicChatForm />
-            </div>
-            <div style={{ gridRow: 2 }}>
               <p>Create new private chat</p>
               <PrivateChatForm />
             </div>
+            {this.props.roles.indexOf('admin') !== -1 ?
+              <div style={{ gridRow: 2 }}>
+                <p>Create new public chat</p>
+                <PublicChatForm />
+              </div> : null}
           </div> : null}
         <div className={styles.optionsColumn}>
           <div style={{ gridRow: 1, gridColumn: 2 }}>
-            <p >Owned chats</p>
-            <div>{this.getChats('private').map(chat => <p key={chat.sid}>{chat.friendlyName}</p>)}</div>
+            <p >Private chats</p>
+            <div>{this.getChats('private').map(chat =>
+              (<div key={chat.sid}><p>{chat.friendlyName} {chat.createdBy === this.props.identity ? <small>creator</small> : null}</p></div>))}
+            </div>
           </div>
           <div style={{ gridColumn: 2, gridRow: 2 }}>
-            <p >Joined chats</p>
-            <div>{this.getChats('public').map(chat => <p key={chat.sid}>{chat.friendlyName}</p>)}</div>
+            <p >Public chats</p>
+            <div>{this.getChats('public').map(chat => <div key={chat.sid}><p>{chat.friendlyName} {chat.createdBy === this.props.identity ? <small>creator</small> : null}</p></div>)}</div>
           </div>
         </div>
       </div>);
@@ -61,6 +64,7 @@ class OptionsDashboard extends React.PureComponent<propTypes> {
 
 const mapStateToProps = (state: State) => ({
   identity: state.token.identity,
+  roles: state.token.roles || [],
   chatToken: state.token.chatToken,
   chats: state.chat.channels,
   connectionState: state.remote.connectionState,

@@ -1,10 +1,9 @@
 // @flow
 import React from 'react';
-import moment from 'moment';
 import styles from './bChatTextArea.styl';
 import type { ChatMessage } from '../../types/General';
 
-moment.locale('et');
+const options = { hour: 'numeric', minute: 'numeric', second: 'numeric', timeZone: 'Europe/Tallinn' };
 
 type propTypes = {
   messages: Array<ChatMessage>,
@@ -16,7 +15,7 @@ const renderChatBox = (props: propTypes) => (
     {props.messages.map(message => (
       <div className={styles.lineStyle} key={message.sid}>
         <div className={styles.timeStamp}>
-          {`[${moment(message.timestamp).format('LTS')}] `}
+          {`[${message.timestamp.toLocaleTimeString('et-EE', options)}] `}
         </div>
         <div style={{ color: '#FFDC28' }}>
           {`<${message.author}> `}

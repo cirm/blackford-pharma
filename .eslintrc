@@ -10,7 +10,8 @@
   "plugins": [
     "react",
     "flowtype",
-    "lodash-fp"
+    "lodash-fp",
+    "you-dont-need-lodash-underscore/compatible"
   ],
   "env": {
     "browser": true

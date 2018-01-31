@@ -3,16 +3,14 @@ const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const Visualizer = require('webpack-visualizer-plugin');
 const { resolve } = require('path');
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = {
   entry: [
     'babel-polyfill',
-    'react-hot-loader/patch',
-    'webpack-dev-server/client?http://0.0.0.0:8080',
-    'webpack/hot/only-dev-server',
     './index.jsx',
   ],
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
   output: {
     filename: 'index.js',
     publicPath: '/',
@@ -55,12 +53,6 @@ module.exports = {
       loader: 'url-loader?limit=65000&mimetype=application/font-woff2&name=src/fonts/[name].[ext]',
     }],
   },
-  devServer: {
-    hot: true,
-    publicPath: '/',
-    contentBase: resolve(__dirname, 'public'),
-    historyApiFallback: true,
-  },
 
   resolve: {
     extensions: ['.js', '.jsx', '.styl', '.woff', '.woff2'],
@@ -76,6 +68,9 @@ module.exports = {
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new Visualizer(),
-    new ExtractTextPlugin({ filename: 'style.css', allChunks: true }),
+		new ExtractTextPlugin({ filename: 'style.css', allChunks: true }),
+		new UglifyJsPlugin({	// remove this with Wp4
+			sourceMap: true
+		})
   ],
 };

@@ -2,6 +2,7 @@
 
 import Chat from 'twilio-chat';
 import Promise from 'bluebird';
+import differenceBy from 'lodash/fp/differenceBy';
 import { putTokenApi } from '../bToken/bTokenApi';
 import { mapRemoteChatActions } from './bRemoteActionListeners';
 import { updateTokens } from '../bToken/bTokenActionCreators';
@@ -20,7 +21,7 @@ export const updateTwilioChannels = (): ThunkAction => async (dispatch: Dispatch
       state.remote.client.getUserChannelDescriptors(),
       state.remote.client.getPublicChannelDescriptors(),
     ]);
-    dispatch(updateChannels({ private: channels[0].state, public: channels[1].state }));
+    dispatch(updateChannels({ private: { items: differenceBy('sid')(channels[0].state.items, channels[1].state.items) }, public: channels[1].state }));
   }
 };
 

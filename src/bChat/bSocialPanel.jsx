@@ -14,7 +14,7 @@ type ChannelsProps = {
 };
 
 const Channels = (props: ChannelsProps) => (
-  <div >{props.channels ? props.channels.public.items.map(channel => (
+  <div >{props.channels ? props.channels.public.map(channel => (
     <p
       key={channel.sid}
       onClick={() => { props.loadChannel(channel); }}
@@ -22,11 +22,11 @@ const Channels = (props: ChannelsProps) => (
     >
       {channel.friendlyName}
     </p>)) : null}
-    {props.channels ? props.channels.private.items.map(channel => (
+    {props.channels ? props.channels.private.map(channel => (
       <p
         key={channel.sid}
         onClick={() => { props.loadChannel(channel); }}
-        className={styles.text}
+        className={channel.lastConsumedMessageIndex !== channel.messagesCount -1 ? styles.unread : styles.text}
       >
         {channel.friendlyName}
       </p>)) : null}

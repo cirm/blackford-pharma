@@ -25,7 +25,7 @@ class OptionsDashboard extends React.PureComponent<propTypes> {
     if (!this.props.chats) {
       return [];
     }
-    return this.props.chats[`${type}`].items;
+    return this.props.chats[`${type}`];
   }
   isConnected() {
     return this.props.connectionState === 'connected';

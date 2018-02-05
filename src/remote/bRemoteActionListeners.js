@@ -1,6 +1,6 @@
 // @flow
-import { newMessage } from './bRemoteChannelActionCreators';
 import { updateUsersAfterEvent } from '../bChat/bChatActionThunks';
+import { newMessage } from './bRemoteChannelActionCreators';
 import type { TwilioClient, ChannelItem } from '../types/Twilio';
 import type { Dispatch } from '../types/Action';
 

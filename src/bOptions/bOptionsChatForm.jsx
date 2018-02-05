@@ -15,7 +15,6 @@ const chatForm = (props) => {
   const {
     handleSubmit, dispatch, type, form,
   } = props;
-  console.log(form, type, type === 'public');
   return (
     <form onSubmit={handleSubmit((val) => {
       dispatch(createTwilioChannel({ channelName: val.createChat, isPrivate: type === 'private' }));

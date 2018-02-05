@@ -59,7 +59,7 @@ class MainDashboard extends React.PureComponent<Props> {
     if (this.historyChanged) {
       if (this.scrollAtBottom) {
         this.scrollToBottom();
-      }
+      } 
     }
   }
 
@@ -67,9 +67,12 @@ class MainDashboard extends React.PureComponent<Props> {
   bChatTextArea: ?ChatUX;
   scrollAtBottom: boolean;
 
-  scrollToBottom() {
+   scrollToBottom() {
     const chat = this.bChatTextArea ? this.bChatTextArea : {};
     chat.scrollTop = chat.scrollHeight;
+    if (chat.lastChild.id && chat.lastChild.id !== null) {
+      this.props.currentChannel.updateLastConsumedMessageIndex(parseInt(chat.lastChild.id)).then(resp => console.log(resp))}
+    //console.log(chat.children[chat.scrollTop].id)
   }
 
 

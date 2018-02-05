@@ -18,7 +18,6 @@ const initialState: ChatState = {
   currentChannel: undefined,
   channelMessages: {},
   channelMembers: {},
-  connectionState: 'disconnected',
 };
 
 const newChannel = (state, data) => state;

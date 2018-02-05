@@ -13,7 +13,7 @@ type propTypes = {
 const renderChatBox = (props: propTypes) => (
   <div ref={props.inputRef} className={styles.chatStyle}>
     {props.messages.map(message => (
-      <div className={styles.lineStyle} key={message.sid}>
+      <div className={styles.lineStyle} key={message.sid} id={message.index}>
         <div className={styles.timeStamp}>
           {`[${message.timestamp.toLocaleTimeString('et-EE', options)}] `}
         </div>

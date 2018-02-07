@@ -102,6 +102,7 @@ export type ChannelDescriptor = {
   sid: string,
   friendlyName: string,
   uniqueName: string,
+  messagesCount: number,
 };
 
 export type TwilioClient = {
@@ -127,6 +128,6 @@ export type TwilioClient = {
 };
 
 export type ChannelApiResponse = {
-  private: PaginatorItem<ChannelDescriptor>,
-  public: PaginatorItem<ChannelDescriptor>,
+  private: ChannelDescriptor[],
+  public: ChannelDescriptor[],
 };

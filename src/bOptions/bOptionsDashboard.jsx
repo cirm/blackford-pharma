@@ -13,6 +13,7 @@ type propTypes = {
   identity: string,
   chatToken: string,
   connectionState: string,
+  roles: string[],
 };
 
 class OptionsDashboard extends React.PureComponent<propTypes> {

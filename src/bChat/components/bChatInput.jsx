@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, reduxForm, reset } from 'redux-form';
-import { inviteUsers2Channel, unkCommand, kickUsersFromChannel } from '../bChatActionThunks';
+import { inviteUsers2Channel, unkCommand, kickUsersFromChannel, leaveChannel } from '../bChatActionThunks';
 import styles from './bChatInput.styl';
 
 let dispatch;
@@ -16,6 +16,8 @@ const logField = (input) => {
     } else {
       dispatch(unkCommand());
     }
+  } else if (input.text === '/leave') {
+      dispatch(leaveChannel());
   } else {
     channel.sendMessage(input.text);
   }

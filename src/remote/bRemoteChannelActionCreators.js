@@ -1,5 +1,5 @@
 // @flow
-import type { MessageItem, ChannelApiResponse } from '../types/Twilio';
+import type { MessageItem, ChannelApiResponse } from '../types/index';
 import { NEW_MESSAGE, UPDATE_CHANNELS, TWILIO_INVALID } from './bRemoteActionConstants';
 
 export const newMessage = (messageItem: MessageItem, sid: string) => ({
@@ -25,7 +25,7 @@ export const twilioInvalid = () => ({
   type: TWILIO_INVALID,
 });
 
-export const newSystemMessage = (messageItem, sid: string) => ({
+export const newSystemMessage = (messageItem: MessageItem, sid: string) => ({
   type: NEW_MESSAGE,
   data: {
     sid,

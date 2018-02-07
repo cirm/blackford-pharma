@@ -2,11 +2,10 @@
 
 import { mapRemoteChannelActions } from '../remote/bRemoteActionListeners';
 import { toggleSidebar, updateChatChannel, updateUsers, updateChannelMessages } from './bChatActionCreators';
+import { push } from 'react-router-redux';
 import { updateTwilioChannels } from '../remote/bRemoteActionThunks';
 import { newSystemMessage } from '../remote/bRemoteChannelActionCreators';
-import type { ThunkAction } from '../types/Action';
-import type { ChatMessage } from '../types/General';
-import type { ChannelDescriptor, ChannelItem } from '../types/Twilio';
+import type { ThunkAction, ChatMessage, ChannelDescriptor, ChannelItem, Dispatch, GetState } from '../types';
 
 
 export const loadChannel = (channelDescriptor: ChannelDescriptor): ThunkAction =>
@@ -32,8 +31,8 @@ export const loadChannel = (channelDescriptor: ChannelDescriptor): ThunkAction =
     dispatch(updateUsers(Members));
   };
 
-export const inviteUsers2Channel = userArr =>
-  async (dispatch, getState) => {
+export const inviteUsers2Channel = (userArr: string[]) =>
+  async (dispatch: Dispatch, getState: GetState) => {
     const state = await getState();
     await userArr.forEach(async (user) => {
       try {
@@ -55,7 +54,7 @@ export const inviteUsers2Channel = userArr =>
     });
   };
 
-export const unkCommand = () => async (dispatch, getState) => {
+export const unkCommand = () => async (dispatch: Dispatch, getState: GetState) => {
   const state = await getState();
   dispatch(newSystemMessage(
     {
@@ -69,7 +68,7 @@ export const unkCommand = () => async (dispatch, getState) => {
   ));
 };
 
-export const kickUsersFromChannel = userArr => async (dispatch, getState) => {
+export const kickUsersFromChannel = (userArr: string[]) => async (dispatch: Dispatch, getState: GetState) => {
   const state = await getState();
   if (state.chat.currentChannel.createdBy !== state.token.identity) {
     dispatch(newSystemMessage(
@@ -104,10 +103,26 @@ export const kickUsersFromChannel = userArr => async (dispatch, getState) => {
   }
 };
 
-export const updateUsersAfterEvent = (payload, sid) => async (dispatch, getState) => {
+export const updateUsersAfterEvent = (payload, sid: string) => async (dispatch: Dispatch, getState: GetState) => {
   const state = getState();
   if (sid === state.chat.currentChannel.sid) {
     const Members = await state.chat.currentChannel.getMembers();
     dispatch(updateUsers(Members));
   }
 };
+
+export const leaveChannel = (channelSid: string) => async (dispatch: Dispatch, getState: GetState) => {
+const state = getState();
+if (!channelSid) {
+  await state.chat.currentChannel.delete();
+  dispatch(updateChatChannel(undefined));
+  dispatch(toggleSidebar(true));
+  dispatch(push('/'));
+} else {
+  await state.chat.channels.private
+    .filter(channelDescriptor => channelSid === channelDescriptor.sid)
+    .forEach(channelDescriptor => channelDescriptor.getChannel().then(channel => channel.delete()));
+  
+  }
+  dispatch(updateTwilioChannels());
+}

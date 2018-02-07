@@ -8,9 +8,7 @@ import { mapRemoteChatActions } from './bRemoteActionListeners';
 import { updateTokens } from '../bToken/bTokenActionCreators';
 import { updateChannels, newMessage } from './bRemoteChannelActionCreators';
 import { clientConnected, twilioConError, serverTokenError } from './bRemoteActionCreators';
-import type { ThunkAction, Dispatch } from '../types/Action';
-import type { TwilioClient, ChannelPaginator, ChannelDescriptor } from '../types/Twilio';
-import type { NewChannel } from '../types/General';
+import type { ThunkAction, Dispatch, GetState, TwilioClient, NewChannel, MessageItem, ChannelDescriptor, ChannelPaginator } from '../types';
 
 const connectedStatuses = ['connected', 'connecting'];
 
@@ -25,7 +23,7 @@ const processPaginator = async (paginatedObject, readData) => {
 } 
 
 
-export const updateTwilioChannels = (): ThunkAction => async (dispatch: Dispatch, getState) => {
+export const updateTwilioChannels = (): ThunkAction => async (dispatch: Dispatch, getState: GetState): ThunkAction => {
   const state = getState();
   if (connectedStatuses.includes(state.remote.connectionState) && state.remote.client) {
     const channels: Array<ChannelPaginator<ChannelDescriptor>> = await Promise.all([
@@ -48,7 +46,7 @@ export const connectClient = (tokens: {chatToken: string}): ThunkAction =>
     }
   };
 
-export const renewToken = (apiToken: string): ThunkAction => async (dispatch: Dispatch) => {
+export const renewToken = (apiToken: string): ThunkAction => async (dispatch: Dispatch): ThunkAction => {
   let tokens;
   try {
     tokens = await putTokenApi({ apiToken });
@@ -74,7 +72,7 @@ export const createTwilioChannel = (payload: NewChannel): ThunkAction =>
   };
 
 
-export const newMessageEvent = (messageItem, sid): ThunkAction => async (dispatch, getState) => {
+export const newMessageEvent = (messageItem: MessageItem, sid: string): ThunkAction => async (dispatch: Dispatch, getState: GetState) => {
   dispatch(newMessage(messageItem, sid));
   const state = getState();
   if (connectedStatuses.includes(state.remote.connectionState) && state.remote.client) {

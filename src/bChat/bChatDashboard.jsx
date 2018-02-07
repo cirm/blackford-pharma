@@ -25,6 +25,7 @@ type ChatUX = {
   scrollTop?: number,
   scrollHeight: number,
   clientHeight: number,
+  lastChild: ?Node,
 };
 
 class MainDashboard extends React.PureComponent<Props> {
@@ -45,7 +46,7 @@ class MainDashboard extends React.PureComponent<Props> {
     if (this.historyChanged) {
       const chat: ChatUX = this.bChatTextArea
         ? this.bChatTextArea
-        : { scrollHeight: 0, clientHeight: 0 };
+        : { scrollHeight: 0, clientHeight: 0, lastChild: undefined };
       const scrollPos = chat.scrollTop;
       this.scrollAtBottom = scrollPos === (chat.scrollHeight - chat.clientHeight);
     }
@@ -70,7 +71,7 @@ class MainDashboard extends React.PureComponent<Props> {
    scrollToBottom() {
     const chat = this.bChatTextArea ? this.bChatTextArea : {};
     chat.scrollTop = chat.scrollHeight;
-    if (chat.lastChild.id && chat.lastChild.id !== null) {
+    if (chat.lastChild && chat.lastChild.id !== null) {
       this.props.currentChannel.updateLastConsumedMessageIndex(parseInt(chat.lastChild.id)).then(resp => console.log(resp))}
     //console.log(chat.children[chat.scrollTop].id)
   }

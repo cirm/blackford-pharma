@@ -13,7 +13,7 @@ export type TokenState = {
 export type ChatState = {
     +sidebar: boolean,
     +userList: Array<MembersItem>,
-    +currentChannel?: ChannelItem,
+    +currentChannel: ?ChannelItem,
     +channelMessages: {[key: ?string]: Array<ChatMessage>},
     channelMap: {[key: ?string]: ChannelItem},
     +channels?: ChannelApiResponse,

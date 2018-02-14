@@ -9,7 +9,7 @@ export const toggleSidebar = (data: boolean) => ({
   data,
 });
 
-export const updateChatChannel = (data: ChannelItem) => ({
+export const updateChatChannel = (data: ?ChannelItem) => ({
   type: UPDATE_CHAT_CHANNEL,
   data,
 });

@@ -106,7 +106,7 @@ export const kickUsersFromChannel = (userArr: string[]) => async (dispatch: Disp
   }
 };
 
-export const updateUsersAfterEvent = (payload, sid: string) => async (dispatch: Dispatch, getState: GetState) => {
+export const updateUsersAfterEvent = (payload: any, sid: string) => async (dispatch: Dispatch, getState: GetState) => {
   const state = getState();
   if (sid === state.chat.currentChannel.sid) {
     const Members = await state.chat.currentChannel.getMembers();

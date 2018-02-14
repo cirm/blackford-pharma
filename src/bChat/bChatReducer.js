@@ -16,7 +16,7 @@ import type{ ChatState } from '../types/State';
 const initialState: ChatState = {
   sidebar: true,
   userList: [],
-  channelMAp: {},
+  channelMap: {},
   currentChannel: undefined,
   channelMessages: {},
   channelMembers: {},
@@ -25,7 +25,7 @@ const initialState: ChatState = {
 const newChannel = (state, data) => ({
   ...state,
   channelMap: {...state.channelMap, [data.sid]: data},
-})
+});
 const updateChannelMessages = (state: ChatState, data: {channelSid: string, messages: Array<ChatMessage>}): ChatState => ({
   ...state,
   channelMessages: { ...{ [data.channelSid]: data.messages }, ...state.channelMessages },

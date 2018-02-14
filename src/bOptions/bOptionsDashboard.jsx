@@ -15,6 +15,7 @@ type propTypes = {
   chatToken: string,
   connectionState: string,
   roles: string[],
+  leaveChannel: (channelSid: string) => void,
 };
 
 class OptionsDashboard extends React.PureComponent<propTypes> {

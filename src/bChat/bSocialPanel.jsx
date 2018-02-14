@@ -11,7 +11,6 @@ import type { MembersItem, ChannelApiResponse, ChannelDescriptor, State } from '
 type ChannelsProps = {
   channels: ChannelApiResponse,
   loadChannel: (data: ChannelDescriptor) => void,
-  updateTwilioChannelDescriptors: () => void,
 };
 
 const Channels = (props: ChannelsProps) => (
@@ -41,6 +40,7 @@ type SocialPanelProps = {
   channels: ChannelApiResponse,
   loadChannel: (data: ChannelDescriptor) => void,
   toggleSidebar: (data: boolean) => void,
+  updateTwilioChannelDescriptors: () => void,
 };
 
 export const SocialPanel = (props: SocialPanelProps) => (

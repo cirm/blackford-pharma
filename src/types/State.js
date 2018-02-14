@@ -15,6 +15,7 @@ export type ChatState = {
     +userList: Array<MembersItem>,
     +currentChannel?: ChannelItem,
     +channelMessages: {[key: ?string]: Array<ChatMessage>},
+    channelMap: {[key: ?string]: ChannelItem},
     +channels?: ChannelApiResponse,
   };
 

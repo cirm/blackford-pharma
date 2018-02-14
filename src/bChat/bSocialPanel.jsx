@@ -5,16 +5,17 @@ import Button from '../components/Button';
 import styles from './bSocialPanel.styl';
 import { loadChannel } from './bChatActionThunks';
 import { toggleSidebar } from './bChatActionCreators';
-import type { MembersItem, ChannelApiResponse, ChannelDescriptor } from '../types/Twilio';
-import type { State } from '../types/State';
+import { updateTwilioChannelDescriptors} from '../remote/bRemoteActionThunks';
+import type { MembersItem, ChannelApiResponse, ChannelDescriptor, State } from '../types';
 
 type ChannelsProps = {
   channels: ChannelApiResponse,
-  loadChannel: (data: ChannelDescriptor) => void
+  loadChannel: (data: ChannelDescriptor) => void,
+  updateTwilioChannelDescriptors: () => void,
 };
 
 const Channels = (props: ChannelsProps) => (
-  <div >{props.channels ? props.channels.public.map(channel => (
+  <div >{props.channels ? props.channels.map(channel => (
     <p
       key={channel.sid}
       onClick={() => { props.loadChannel(channel); }}
@@ -22,14 +23,6 @@ const Channels = (props: ChannelsProps) => (
     >
       {channel.friendlyName}
     </p>)) : null}
-    {props.channels ? props.channels.private.map(channel => (
-      <p
-        key={channel.sid}
-        onClick={() => { props.loadChannel(channel); }}
-        className={channel.lastConsumedMessageIndex !== channel.messagesCount -1 ? styles.unread : styles.text}
-      >
-        {channel.friendlyName}
-      </p>)) : null}
   </div>);
 
 type UsersProps = {
@@ -55,7 +48,7 @@ export const SocialPanel = (props: SocialPanelProps) => (
     {props.showChannels
       ? <Channels loadChannel={props.loadChannel} channels={props.channels} />
       : <div>
-        <Button onClick={() => { props.toggleSidebar(true); }}>Channels</Button>
+        <Button onClick={() => { props.toggleSidebar(true); props.updateTwilioChannelDescriptors() }}>Channels</Button>
         <Users userList={props.userList} />
       </div>}
   </div>
@@ -70,4 +63,5 @@ const mapPropsToState = (state: State) => ({
 export const SocialContainer = connect(mapPropsToState, {
   loadChannel,
   toggleSidebar,
+  updateTwilioChannelDescriptors,
 })(SocialPanel);

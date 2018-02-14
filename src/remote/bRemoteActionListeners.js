@@ -1,16 +1,19 @@
 // @flow
 import { updateUsersAfterEvent } from '../bChat/bChatActionThunks';
 import { newMessage } from './bRemoteChannelActionCreators';
-import type { TwilioClient, ChannelItem } from '../types/Twilio';
-import type { Dispatch } from '../types/Action';
+import {TCONSTATE, TCHANADDED} from './bRemoteActionConstants';
+import type { Dispatch, ChannelItem, TwilioClient } from '../types';
 
 const logger = (payload) => { console.log(payload); };
-const updateConnectionState = (data: string) => ({ type: 'TWILIO/CONNECTION_STATE', data });
-const newChannel = (data: string) => ({ type: 'TWILIO/CHANNEL_ADDED', data });
+const updateConnectionState = (data: string) => ({ type: TCONSTATE, data });
+const newChannel = (data: ChannelItem) => (dispatch) => {
+  mapRemoteChannelActions(data, dispatch);
+  dispatch({ type: TCHANADDED, data });
+};
 
 const remoteActionsMap = {
   channelAdded: newChannel,
-  connectionStateChanged: updateConnectionState,
+  connectionStateChanged: updateConnectionState,  
   // channelJoined: logger,
   channelInvited: logger,
   // channelUpdated: logger,

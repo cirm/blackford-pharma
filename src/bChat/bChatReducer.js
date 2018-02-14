@@ -7,6 +7,7 @@ import {
   TOGGLE_SIDEBAR,
   UPDATE_CHANNEL_MESSAGES,
 } from './bChatActionConstants';
+import { TCHANADDED } from '../remote/bRemoteActionConstants';
 import { LOGOUT } from '../bToken/bTokenConstants';
 import type { Action } from '../types/Action';
 import type { ChatMessage } from '../types/General';
@@ -15,12 +16,16 @@ import type{ ChatState } from '../types/State';
 const initialState: ChatState = {
   sidebar: true,
   userList: [],
+  channelMAp: {},
   currentChannel: undefined,
   channelMessages: {},
   channelMembers: {},
 };
 
-const newChannel = (state, data) => state;
+const newChannel = (state, data) => ({
+  ...state,
+  channelMap: {...state.channelMap, [data.sid]: data},
+})
 const updateChannelMessages = (state: ChatState, data: {channelSid: string, messages: Array<ChatMessage>}): ChatState => ({
   ...state,
   channelMessages: { ...{ [data.channelSid]: data.messages }, ...state.channelMessages },
@@ -46,7 +51,7 @@ const chatReducer = (state: ChatState = initialState, action: Action): ChatState
       return updateChannelMessages(state, action.data);
     case LOGOUT:
       return { ...initialState };
-    case 'TWILIO/CHANNEL_ADDED':
+    case TCHANADDED:
       return newChannel(state, action.data);
     case NEW_MESSAGE:
       return addNewMessage(state, action.data);

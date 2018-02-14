@@ -16,8 +16,12 @@ const logField = (input) => {
     } else {
       dispatch(unkCommand());
     }
-  } else if (input.text === '/leave') {
+  } else if (/\/\w+/.test(input.text)) {
+    if (input.text === '/leave') {
       dispatch(leaveChannel());
+    } else { 
+      dispatch(unkCommand())
+    }
   } else {
     channel.sendMessage(input.text);
   }

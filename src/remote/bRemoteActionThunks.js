@@ -1,19 +1,17 @@
 // @flow
 
 import Chat from 'twilio-chat';
-import Promise from 'bluebird';
 import differenceBy from 'lodash/fp/differenceBy';
 import { putTokenApi } from '../bToken/bTokenApi';
 import { mapRemoteChatActions } from './bRemoteActionListeners';
 import { updateTokens } from '../bToken/bTokenActionCreators';
-import { updateChannels, newMessage } from './bRemoteChannelActionCreators';
+import { updateChannelDescriptors, newMessage } from './bRemoteChannelActionCreators';
 import { clientConnected, twilioConError, serverTokenError } from './bRemoteActionCreators';
 import type { ThunkAction, Dispatch, GetState, TwilioClient, NewChannel, MessageItem, ChannelDescriptor, ChannelPaginator } from '../types';
 
 const connectedStatuses = ['connected', 'connecting'];
 
 const processPaginator = async (paginatedObject, readData) => {
-  console.log(paginatedObject, readData)
   const processedItems = readData ? [...paginatedObject.state.items, ...readData]: [...paginatedObject.state.items]; 
   if (paginatedObject.hasNextPage) {
     const nextPage = await paginatedObject.nextPage();
@@ -23,14 +21,12 @@ const processPaginator = async (paginatedObject, readData) => {
 } 
 
 
-export const updateTwilioChannels = (): ThunkAction => async (dispatch: Dispatch, getState: GetState): ThunkAction => {
+export const updateTwilioChannelDescriptors = (): ThunkAction => async (dispatch: Dispatch, getState: GetState): ThunkAction => {
   const state = getState();
   if (connectedStatuses.includes(state.remote.connectionState) && state.remote.client) {
-    const channels: Array<ChannelPaginator<ChannelDescriptor>> = await Promise.all([
-      state.remote.client.getUserChannelDescriptors().then(resp => processPaginator(resp)),
-      state.remote.client.getPublicChannelDescriptors().then(resp => processPaginator(resp)),
-    ]);
-    dispatch(updateChannels({private: differenceBy('sid')(channels[0], channels[1]), public: channels[1] }));
+    const channels: Array<ChannelDescriptor> = await state.remote.client.getUserChannelDescriptors()
+      .then(resp => processPaginator(resp));
+    dispatch(updateChannelDescriptors(channels));
   }
 };
 
@@ -40,7 +36,7 @@ export const connectClient = (tokens: {chatToken: string}): ThunkAction =>
       const connectedClient: TwilioClient = await Chat.create(tokens.chatToken);
       mapRemoteChatActions(connectedClient, dispatch);
       dispatch(clientConnected(connectedClient));
-      dispatch(updateTwilioChannels());
+      dispatch(updateTwilioChannelDescriptors());
     } catch (e) {
       dispatch(twilioConError(e));
     }
@@ -67,16 +63,6 @@ export const createTwilioChannel = (payload: NewChannel): ThunkAction =>
         friendlyName: payload.channelName,
         isPrivate: payload.isPrivate,
       });
-      dispatch(updateTwilioChannels());
+      dispatch(updateTwilioChannelDescriptors());
     }
   };
-
-
-export const newMessageEvent = (messageItem: MessageItem, sid: string): ThunkAction => async (dispatch: Dispatch, getState: GetState) => {
-  dispatch(newMessage(messageItem, sid));
-  const state = getState();
-  if (connectedStatuses.includes(state.remote.connectionState) && state.remote.client) {
-    const privateChannels = await state.remote.client.getUserChannelDescriptors().then(resp => processPaginator(resp));
-    dispatch(updateChannels({ private:  differenceBy('sid')(privateChannels, state.chat.channels.public), public: state.chat.channels.public }));
-  }
-};

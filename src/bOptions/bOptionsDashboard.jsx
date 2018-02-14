@@ -3,9 +3,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import styles from './bOptionsDashboard.styl';
+import Button from '../components/Button';
 import { PrivateChatForm, PublicChatForm } from './bOptionsChatForm';
-import type { State } from '../types/State';
-import type { ChannelItem, PaginatorItem } from '../types/Twilio';
+import { leaveChannel } from '../bChat/bChatActionThunks';
+import type { State, ChannelItem, PaginatorItem } from '../types';
 
 type propTypes = {
   goToken: () => void,
@@ -22,12 +23,7 @@ class OptionsDashboard extends React.PureComponent<propTypes> {
       return this.props.goToken();
     }
   }
-  getChats(type: string): Array<ChannelItem> {
-    if (!this.props.chats) {
-      return [];
-    }
-    return this.props.chats[`${type}`];
-  }
+
   isConnected() {
     return this.props.connectionState === 'connected';
   }
@@ -49,14 +45,23 @@ class OptionsDashboard extends React.PureComponent<propTypes> {
           </div> : null}
         <div className={styles.optionsColumn}>
           <div style={{ gridRow: 1, gridColumn: 2 }}>
-            <p >Private chats</p>
-            <div>{this.getChats('private').map(chat =>
-              (<div key={chat.sid}><p>{chat.friendlyName} {chat.createdBy === this.props.identity ? <small>creator</small> : null}</p></div>))}
+            <p >Connected Chats</p>
+            <div>{this.props.chats.map(chat =>
+              (<div key={chat.sid} style={{display: 'flex', 'justifyContent': 'space-between', 'alignItems': 'baseline'}}>
+                <p>
+                  {chat.friendlyName} 
+                </p>
+                <Button 
+                  onClick={() => {this.props.leaveChannel(chat.sid)}}
+                >
+                  leave
+                </Button>
+                {chat.createdBy === this.props.identity 
+                  ? <small>creator</small> 
+                  : null
+                }
+              </div>))}
             </div>
-          </div>
-          <div style={{ gridColumn: 2, gridRow: 2 }}>
-            <p >Public chats</p>
-            <div>{this.getChats('public').map(chat => <div key={chat.sid}><p>{chat.friendlyName} {chat.createdBy === this.props.identity ? <small>creator</small> : null}</p></div>)}</div>
           </div>
         </div>
       </div>);
@@ -67,12 +72,13 @@ const mapStateToProps = (state: State) => ({
   identity: state.token.identity,
   roles: state.token.roles || [],
   chatToken: state.token.chatToken,
-  chats: state.chat.channels,
+  chats: state.chat.channels || [],
   connectionState: state.remote.connectionState,
 });
 
 const mapDispatchToProps = {
   goToken: () => push('/token'),
+  leaveChannel,
 };
 
 const OptionsContainer = connect(

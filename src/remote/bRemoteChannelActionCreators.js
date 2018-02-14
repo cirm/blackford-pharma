@@ -1,8 +1,14 @@
 // @flow
-import type { MessageItem, ChannelApiResponse } from '../types/index';
+import type { MessageItem, ChannelApiResponse, Dispatch, GetState } from '../types';
+import { updateTwilioChannelDescriptors } from './bRemoteActionThunks';
 import { NEW_MESSAGE, UPDATE_CHANNELS, TWILIO_INVALID } from './bRemoteActionConstants';
 
-export const newMessage = (messageItem: MessageItem, sid: string) => ({
+export const newMessage = (messageItem: MessageItem, sid: string) => (dispatch: Dispatch, getState: GetState) =>  { 
+  const state = getState();
+  if (sid !== state.chat.currentChannel.sid) {
+    dispatch(updateTwilioChannelDescriptors());
+  }
+  dispatch({
   type: NEW_MESSAGE,
   data: {
     sid,
@@ -14,9 +20,10 @@ export const newMessage = (messageItem: MessageItem, sid: string) => ({
       sid: messageItem.sid,
     },
   },
-});
+})
+};
 
-export const updateChannels = (data: ChannelApiResponse) => ({
+export const updateChannelDescriptors = (data: ChannelApiResponse) => ({
   type: UPDATE_CHANNELS,
   data,
 });

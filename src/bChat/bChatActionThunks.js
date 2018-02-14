@@ -3,7 +3,7 @@
 import { mapRemoteChannelActions } from '../remote/bRemoteActionListeners';
 import { toggleSidebar, updateChatChannel, updateUsers, updateChannelMessages } from './bChatActionCreators';
 import { push } from 'react-router-redux';
-import { updateTwilioChannels } from '../remote/bRemoteActionThunks';
+import { updateTwilioChannelDescriptors } from '../remote/bRemoteActionThunks';
 import { newSystemMessage } from '../remote/bRemoteChannelActionCreators';
 import type { ThunkAction, ChatMessage, ChannelDescriptor, ChannelItem, Dispatch, GetState } from '../types';
 
@@ -16,7 +16,7 @@ export const loadChannel = (channelDescriptor: ChannelDescriptor): ThunkAction =
     if (Channel.status !== 'joined') {
       Channel = await Channel.join();
     }
-    dispatch(updateTwilioChannels());
+    dispatch(updateTwilioChannelDescriptors());
     mapRemoteChannelActions(Channel, dispatch);
     const Messages = await Channel.getMessages(1000);
     const messages: ChatMessage[] = Messages.items.map(Message => ({
@@ -39,12 +39,13 @@ export const inviteUsers2Channel = (userArr: string[]) =>
         await state.chat.currentChannel.add(user);
       } catch (e) {
         if (e.message === 'User not found') {
+          const timestamp = new Date();
           dispatch(newSystemMessage(
             {
               author: '*SYSTEM*',
               body: `ACCESS VIOLATION - USER "${user}" not found!`,
-              timestamp: Date.now(),
-              sid: `SYSTEM ${Date.now()}`,
+              timestamp,
+              sid: `SYSTEM_${timestamp.getTime()}`,
               index: state.chat.channelMessages[state.chat.currentChannel.sid].length || 0,
             },
             state.chat.currentChannel.sid,
@@ -56,12 +57,13 @@ export const inviteUsers2Channel = (userArr: string[]) =>
 
 export const unkCommand = () => async (dispatch: Dispatch, getState: GetState) => {
   const state = await getState();
+  const timestamp = new Date();
   dispatch(newSystemMessage(
     {
       author: '*SYSTEM*',
-      body: 'UNK COMMAND - only "/invite or /kick username" is whitelisted!',
-      timestamp: Date.now(),
-      sid: `SYSTEM ${Date.now()}`,
+      body: 'UNK COMMAND - only "/invite, /leave or /kick username" are whitelisted!',
+      timestamp,
+      sid: `SYSTEM_${timestamp.getTime()}`,
       index: state.chat.channelMessages[state.chat.currentChannel.sid].length || 0,
     },
     state.chat.currentChannel.sid,
@@ -71,14 +73,14 @@ export const unkCommand = () => async (dispatch: Dispatch, getState: GetState) =
 export const kickUsersFromChannel = (userArr: string[]) => async (dispatch: Dispatch, getState: GetState) => {
   const state = await getState();
   if (state.chat.currentChannel.createdBy !== state.token.identity) {
-    dispatch(newSystemMessage(
-      {
-        author: '*SYSTEM*',
-        body: 'ACCESS VIOLATION - Must be creator to /kick',
-        timestamp: Date.now(),
-        sid: `SYSTEM ${Date.now()}`,
-        index: state.chat.channelMessages[state.chat.currentChannel.sid].length || 0,
-      },
+    const timestamp = new Date();
+    dispatch(newSystemMessage({
+      author: '*SYSTEM*',
+      body: 'ACCESS VIOLATION - Must be creator to /kick',
+      timestamp,
+      sid: `SYSTEM_${timestamp.getTime()}`,
+      index: state.chat.channelMessages[state.chat.currentChannel.sid].length || 0,
+    },
       state.chat.currentChannel.sid,
     ));
   } else {
@@ -87,12 +89,13 @@ export const kickUsersFromChannel = (userArr: string[]) => async (dispatch: Disp
         await state.chat.currentChannel.removeMember(user);
       } catch (e) {
         if (e.message === 'User not member of channel') {
+          const timestamp = new Date();
           dispatch(newSystemMessage(
             {
               author: '*SYSTEM*',
               body: `ACCESS VIOLATION - USER "${user}" not member of channel!`,
-              timestamp: Date.now(),
-              sid: `SYSTEM ${Date.now()}`,
+              timestamp,
+              sid: `SYSTEM_${timestamp.getTime()}`,
               index: state.chat.channelMessages[state.chat.currentChannel.sid].length || 0,
             },
             state.chat.currentChannel.sid,
@@ -124,5 +127,5 @@ if (!channelSid) {
     .forEach(channelDescriptor => channelDescriptor.getChannel().then(channel => channel.delete()));
   
   }
-  dispatch(updateTwilioChannels());
+  dispatch(updateTwilioChannelDescriptors());
 }

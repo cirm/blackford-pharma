@@ -1,23 +1,41 @@
 // @flow
 import { updateUsersAfterEvent } from '../bChat/bChatActionThunks';
-import { newMessageThunk } from './bRemoteActionThunks';
+import { updateChatChannel, toggleSidebar } from '../bChat/bChatActionCreators';
+import { newMessage } from './bRemoteChannelActionCreators';
+import { updateTwilioChannelDescriptors } from './bRemoteActionThunks';
 import {TCONSTATE, TCHANADDED} from './bRemoteActionConstants';
-import type { Dispatch, ChannelItem, TwilioClient } from '../types';
+import type { Dispatch, ChannelItem, TwilioClient, MessageItem, ThunkAction, GetState } from '../types';
 
 const logger = (payload) => { console.log(payload); };
 const updateConnectionState = (data: string) => ({ type: TCONSTATE, data });
-const newChannel = (data: ChannelItem) => (dispatch) => {
+const updateChannelsAfterEvent = (data: ChannelItem) => (dispatch) => {
   mapRemoteChannelActions(data, dispatch);
   dispatch({ type: TCHANADDED, data });
+  dispatch(updateTwilioChannelDescriptors());
 };
 
+export const newMessageThunk = (messageItem: MessageItem, sid: string): ThunkAction =>
+  (dispatch: Dispatch, getState: GetState) => {
+    const state = getState();
+    if (!state.chat.currentChannel || sid !== state.chat.currentChannel.sid) {
+      dispatch(updateTwilioChannelDescriptors());
+    }
+    dispatch(newMessage(messageItem, sid));
+};
+
+const channelRemoved = (channel: ChannelItem) => (dispatch) => {
+  dispatch(updateTwilioChannelDescriptors());
+  dispatch(updateChatChannel(undefined));
+  dispatch(toggleSidebar(true));
+}
+
 const remoteActionsMap = {
-  channelAdded: newChannel,
+  channelAdded: updateChannelsAfterEvent,
   connectionStateChanged: updateConnectionState,  
   // channelJoined: logger,
   channelInvited: logger,
   // channelUpdated: logger,
-  channelRemoved: logger,
+  channelRemoved: channelRemoved,
   // channelLeft: logger,
 };
 

@@ -77,10 +77,10 @@ export const createTwilioChannel = (payload: NewChannel): ThunkAction =>
     }
   };
 
-export const newMessageThunk = (messageItem: MessageItem, sid: string): ThunkAction =>
-  (dispatch: Dispatch, getState: GetState) => {
+export const newMessageThunk = (messageItem: MessageItem, sid: string): ThunkAction =>(dispatch: Dispatch, getState: GetState) => {
+    console.log('pew');
     const state = getState();
-    if (sid !== state.chat.currentChannel.sid) {
+    if (!state.chat.currentChannel || sid !== state.chat.currentChannel.sid) {
       dispatch(updateTwilioChannelDescriptors());
     }
     dispatch(newMessage(messageItem, sid));

@@ -122,7 +122,7 @@ if (!channelSid) {
   dispatch(toggleSidebar(true));
   dispatch(push('/'));
 } else {
-  await state.chat.channels.private
+  await state.chat.channels
     .filter(channelDescriptor => channelSid === channelDescriptor.sid)
     .forEach(channelDescriptor => channelDescriptor.getChannel().then(channel => channel.delete()));
   

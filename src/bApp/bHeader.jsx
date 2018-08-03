@@ -13,7 +13,8 @@ type props = {
   urlPath: string,
   goIRC: () => void,
   goOptions: () => void,
-  logout: () => void
+  logout: () => void,
+  goAvatar: () => void,
 }
 
 export class Header extends React.PureComponent<props> {
@@ -25,7 +26,7 @@ export class Header extends React.PureComponent<props> {
         {this.props.identity && this.props.urlPath !== '/gopher' ?
           <Button > <Link to="/gopher" >Gopher</Link> </Button> : null}
         {this.props.identity && this.props.urlPath !== '/avatar' ?
-          <Button > <Link to="/avatar" >Avatar</Link> </Button> : null}
+          <Button onClick={this.props.goAvatar}> <Link to="/avatar" > Avatar </Link> </Button> : null}
         {this.props.identity && this.props.urlPath !== '/options' ?
           <Button onClick={this.props.goOptions} > Options </Button> : null}
         {this.props.identity ?
@@ -43,6 +44,7 @@ const mapDispatchToProps = {
   logout,
   goIRC: () => push('/'),
   goOptions: () => push('/options'),
+  goAvatar: () => push('/avatar'),
 };
 
 export const HeaderContainer = connect(mapStateToProps, mapDispatchToProps)(Header);

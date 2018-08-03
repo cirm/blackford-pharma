@@ -1,20 +1,28 @@
 const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const Visualizer = require('webpack-visualizer-plugin');
+const WebpackMd5Hash = require('webpack-md5-hash');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { resolve } = require('path');
+
+const htmlPlugin = new HtmlWebpackPlugin({
+  template: './index.html',
+  filename: './index.html',
+});
+
+const miniCssExtract = new MiniCssExtractPlugin({
+  filename: '[name].[contenthash].css',
+  chunkFilename: '[id].css',
+});
 
 module.exports = {
   entry: [
     'babel-polyfill',
-    'react-hot-loader/patch',
-    'webpack-dev-server/client?http://0.0.0.0:8080',
-    'webpack/hot/only-dev-server',
     './index.jsx',
   ],
-  devtool: 'eval-source-map',
   output: {
-    filename: 'index.js',
+    filename: '[name].[hash].js',
     publicPath: '/',
     path: resolve(__dirname, 'public'),
   },
@@ -29,20 +37,25 @@ module.exports = {
       loader: 'babel-loader',
     }, {
       test: /\.styl$/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: ['css-modules-flow-types-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]',
-          {
-            loader: 'postcss-loader',
-            options: {
-              sourceMap: true,
-              plugins: [autoprefixer({
-                browsers: ['last 2 versions', '> 5%'],
-              })],
-            },
+      use: [MiniCssExtractPlugin.loader, 'css-modules-flow-types-loader',
+      {
+        loader: 'css-loader',
+        options: {
+          modules: true,
+          sourceMap: true,
+          importLoader: 2,
+        },
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          config: {
+            path: './config/postcss.config.js',
           },
+        },
+      },
+
           'stylus-loader'],
-      }),
     }, {
       test: /\.png$/,
       loader: 'url-loader',
@@ -68,14 +81,8 @@ module.exports = {
 
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true,
-      debug: false,
-    }),
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new Visualizer(),
-    new ExtractTextPlugin({ filename: 'style.css', allChunks: true }),
+    htmlPlugin,
+    miniCssExtract,
+    new WebpackMd5Hash(),
   ],
 };

@@ -4,6 +4,7 @@ import { reducer as form } from 'redux-form';
 import token from './bToken/bTokenReducer';
 import chat from './bChat/bChatReducer';
 import remote from './remote/bRemoteReducer';
+import avatar from './bAvatar/AvatarReducer';
 
 const reducers = combineReducers({
   chat,
@@ -11,6 +12,7 @@ const reducers = combineReducers({
   token,
   router,
   remote,
+  avatar,
 });
 
 export default reducers;

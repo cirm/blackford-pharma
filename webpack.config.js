@@ -69,7 +69,6 @@ module.exports = {
     }],
   },
   devServer: {
-    hot: true,
     publicPath: '/',
     contentBase: resolve(__dirname, 'public'),
     historyApiFallback: true,
@@ -80,7 +79,6 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     htmlPlugin,
     miniCssExtract,
     new WebpackMd5Hash(),

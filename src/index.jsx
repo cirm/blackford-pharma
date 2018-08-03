@@ -5,6 +5,7 @@ import { Route } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
 import { getStore, history } from './store';
 import App from './bApp/bApp';
+import { hot } from 'react-hot-loader'
 import DashboardContainer from './bChat/bChatDashboard';
 import { LoginDashboard } from './bToken/bTokenDashboard';
 import OptionsDashboard from './bOptions/bOptionsDashboard';
@@ -31,6 +32,6 @@ const render = (Component) => {
   );
 };
 
-render(App);
+hot(module)(render(App));
 
-module.hot.accept();
+

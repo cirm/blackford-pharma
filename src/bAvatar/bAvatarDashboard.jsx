@@ -26,7 +26,7 @@ export class AvatarDashboard extends React.PureComponent<propTypes> {
 
   render() {
     return (
-      <div style={{color: 'red'}}>
+      <div className={styles.dashboard}>
         { this.isConnected() ?
        (<div> {Object.keys(this.props.avatar).map(key => (<p>{key}: {this.props.avatar[key]}</p>))}
           <Button onClick={this.props.renewAvatar}> Renew</Button></div>)

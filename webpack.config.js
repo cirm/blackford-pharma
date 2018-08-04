@@ -11,11 +11,6 @@ const htmlPlugin = new HtmlWebpackPlugin({
   filename: './index.html',
 });
 
-const miniCssExtract = new MiniCssExtractPlugin({
-  filename: '[name].[contenthash].css',
-  chunkFilename: '[id].css',
-});
-
 module.exports = {
   entry: [
     'babel-polyfill',
@@ -37,7 +32,7 @@ module.exports = {
       loader: 'babel-loader',
     }, {
       test: /\.styl$/,
-      use: [MiniCssExtractPlugin.loader, 'css-modules-flow-types-loader',
+      use: ['style-loader', 'css-modules-flow-types-loader',
       {
         loader: 'css-loader',
         options: {
@@ -80,7 +75,6 @@ module.exports = {
 
   plugins: [
     htmlPlugin,
-    miniCssExtract,
     new WebpackMd5Hash(),
   ],
 };

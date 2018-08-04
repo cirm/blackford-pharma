@@ -32,6 +32,10 @@ const render = (Component) => {
   );
 };
 
-hot(module)(render(App));
+render(App);
+
+if (module.hot) {
+  module.hot.accept('./bApp/bApp', () => { render(App) });
+}
 
 

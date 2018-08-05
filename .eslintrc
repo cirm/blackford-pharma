@@ -5,13 +5,14 @@
     "plugin:react/recommended",
     "airbnb",
     "plugin:lodash-fp/recommended",
-    "plugin:flowtype/recommended"
+    "plugin:flowtype/recommended",
+    "plugin:you-dont-need-lodash-underscore/compatible"
   ],
   "plugins": [
     "react",
     "flowtype",
     "lodash-fp",
-    "you-dont-need-lodash-underscore/compatible"
+    "you-dont-need-lodash-underscore"
   ],
   "env": {
     "browser": true

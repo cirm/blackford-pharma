@@ -1,8 +1,5 @@
-const webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
 const WebpackMd5Hash = require('webpack-md5-hash');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { resolve } = require('path');
 
@@ -38,24 +35,24 @@ module.exports = {
     }, {
       test: /\.styl$/,
       use: [MiniCssExtractPlugin.loader, 'css-modules-flow-types-loader',
-      {
-        loader: 'css-loader',
-        options: {
-          modules: true,
-          sourceMap: true,
-          importLoader: 2,
-        },
-      },
-      {
-        loader: 'postcss-loader',
-        options: {
-          config: {
-            path: './config/postcss.config.js',
+        {
+          loader: 'css-loader',
+          options: {
+            modules: true,
+            sourceMap: true,
+            importLoader: 2,
           },
         },
-      },
+        {
+          loader: 'postcss-loader',
+          options: {
+            config: {
+              path: './config/postcss.config.js',
+            },
+          },
+        },
 
-          'stylus-loader'],
+        'stylus-loader'],
     }, {
       test: /\.png$/,
       loader: 'url-loader',

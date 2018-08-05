@@ -1,9 +1,9 @@
 // @flow
 import type { State } from './State';
-import { toggleSidebar, updateChatChannel, updateUsers, updateChannelMessages } from '../bChat/bChatActionCreators';
-import { updateTokens } from '../bToken/bTokenActionCreators';
-import { newMessage, updateChannelDescriptors, twilioInvalid, newSystemMessage } from '../remote/bRemoteChannelActionCreators';
-import { logout, clientConnected, twilioConError, serverTokenError } from '../remote/bRemoteActionCreators';
+import { toggleSidebar, updateChatChannel, updateUsers, updateChannelMessages } from '../chat/chatActionCreators';
+import { updateTokens } from '../token/tokenActionCreators';
+import { newMessage, updateChannelDescriptors, twilioInvalid, newSystemMessage } from '../remote/remoteChannelActionCreators';
+import { logout, clientConnected, twilioConError, serverTokenError } from '../remote/remoteActionCreators';
 
 // https://hackernoon.com/redux-flow-type-getting-the-maximum-benefit-from-the-fewest-key-strokes-5c006c54ec87
 type _ExtractReturn<B, F: (...args: any[]) => B> = B;

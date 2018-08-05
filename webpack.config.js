@@ -1,9 +1,5 @@
-const webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
 const WebpackMd5Hash = require('webpack-md5-hash');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { resolve } = require('path');
 
 const htmlPlugin = new HtmlWebpackPlugin({
@@ -16,6 +12,7 @@ module.exports = {
     'babel-polyfill',
     './index.jsx',
   ],
+  devtool: 'eval-source-map',
   output: {
     filename: '[name].[hash].js',
     publicPath: '/',
@@ -33,24 +30,24 @@ module.exports = {
     }, {
       test: /\.styl$/,
       use: ['style-loader', 'css-modules-flow-types-loader',
-      {
-        loader: 'css-loader',
-        options: {
-          modules: true,
-          sourceMap: true,
-          importLoader: 2,
-        },
-      },
-      {
-        loader: 'postcss-loader',
-        options: {
-          config: {
-            path: './config/postcss.config.js',
+        {
+          loader: 'css-loader',
+          options: {
+            modules: true,
+            sourceMap: true,
+            importLoader: 2,
           },
         },
-      },
+        {
+          loader: 'postcss-loader',
+          options: {
+            config: {
+              path: './config/postcss.config.js',
+            },
+          },
+        },
 
-          'stylus-loader'],
+        'stylus-loader'],
     }, {
       test: /\.png$/,
       loader: 'url-loader',

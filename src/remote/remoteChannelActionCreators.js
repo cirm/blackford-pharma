@@ -1,6 +1,7 @@
 // @flow
-import type { MessageItem, ChannelApiResponse, Dispatch, GetState } from '../types';
-import { updateTwilioChannelDescriptors } from './remoteActionThunks';
+import type {
+  MessageItem, ChannelApiResponse,
+} from '../types';
 import { NEW_MESSAGE, UPDATE_CHANNELS, TWILIO_INVALID } from './remoteActionConstants';
 
 export const newMessage = (messageItem: MessageItem, sid: string) => ({
@@ -15,7 +16,7 @@ export const newMessage = (messageItem: MessageItem, sid: string) => ({
       sid: messageItem.sid,
     },
   },
-})
+});
 
 export const updateChannelDescriptors = (data: ChannelApiResponse) => ({
   type: UPDATE_CHANNELS,

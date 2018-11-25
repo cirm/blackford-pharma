@@ -73,6 +73,8 @@ function tokenReducer(state: TokenState = getInitialState(), action: Action): To
       return removeFaultyToken();
     case LOGOUT:
       return logOut();
+    case 'TWILIO/CONNECTION_ERROR':
+      return logOut();
     default:
       return state;
   }

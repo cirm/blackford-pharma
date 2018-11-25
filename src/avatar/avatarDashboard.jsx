@@ -3,43 +3,76 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import styles from './avatarDashboard.styl';
-import renewAvatar from './avatarActionThunks';
+import {
+  renewAvatar, renewOrders, renewShop, buyProduct,
+} from './avatarActionThunks';
 import Button from '../components/Button';
-import type { State } from '../types';
+import OrderList from './avatarOrders';
+import ShopList from './avatarShop';
+import type { State } from '../types/State';
 
 type propTypes = {
   goToken: () => void,
   identity: string,
+  chatToken: string,
   connectionState: string,
+  renewAvatar: () => void,
+  renewOrders: () => void,
+  renewShop: () => void,
 };
 
 export class AvatarDashboard extends React.PureComponent<propTypes> {
   componentWillMount() {
-    if (!this.props.identity) {
-      return this.props.goToken();
+    const {
+      identity, chatToken, goToken, renewAvatar, renewOrders, renewShop,
+    } = this.props;
+    if (!identity || !chatToken) {
+      goToken();
+    } else {
+      renewAvatar();
+      renewOrders();
+      renewShop();
     }
-    this.props.renewAvatar();
   }
 
-  isConnected() {
-    return this.props.connectionState === 'connected';
+  componentWillReceiveProps({ identity, chatToken }) {
+    if (!identity || !chatToken) {
+      this.props.goToken();
+    }
   }
 
   render() {
+    const {
+      decker, connectionState, renewAvatar, buyProduct, renewOrders, renewShop, orders, shop,
+    } = this.props;
     return (
       <div className={styles.dashboard}>
-        { this.isConnected()
+        { connectionState
           ? (
-            <div>
-              {Object.keys(this.props.avatar).map(key => (
-                <p key={key}>
-                  {`${key}:${this.props.avatar[key]}`}
-                </p>
-              ))}
-              <Button onClick={this.props.renewAvatar}>
-                Renew
-              </Button>
-            </div>
+            <React.Fragment>
+              <div className={styles.dashboardItem} style={{ gridColumn: 1 }}>
+                {Object.keys(decker).map(key => (
+                  <p key={key}>
+                    {`${key}:${decker[key]}`}
+                  </p>
+                ))}
+                <Button onClick={renewAvatar}>
+                Renew Stats
+                </Button>
+              </div>
+              <div className={styles.dashboardItem} style={{ gridColumn: 2, gridRow: 1 / -1 }}>
+                <OrderList orders={orders} />
+                <Button onClick={renewOrders}>
+                Renew Orders
+                </Button>
+              </div>
+              <div className={styles.dashboardItem} style={{ gridColumn: 1 }}>
+                <ShopList items={shop} buyProduct={buyProduct} />
+                <Button onClick={renewShop}>
+                Renew Shop
+                </Button>
+              </div>
+            </React.Fragment>
           )
           : null
                 }
@@ -51,12 +84,18 @@ export class AvatarDashboard extends React.PureComponent<propTypes> {
 const mapStateToProps = (state: State) => ({
   identity: state.token.identity,
   connectionState: state.remote.connectionState,
-  avatar: state.avatar,
+  decker: state.avatar.decker,
+  shop: state.avatar.shop,
+  orders: state.avatar.orders,
+  chatToken: state.token.chatToken,
 });
 
 const mapDispatchToProps = {
   goToken: () => push('/token'),
   renewAvatar: () => renewAvatar(),
+  renewShop: () => renewShop(),
+  renewOrders: () => renewOrders(),
+  buyProduct: id => buyProduct(id),
 };
 
 export const AvatarContainer = connect(

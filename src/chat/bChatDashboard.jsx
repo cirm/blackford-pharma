@@ -60,33 +60,38 @@ class MainDashboard extends React.PureComponent<Props> {
     if (this.historyChanged) {
       if (this.scrollAtBottom) {
         this.scrollToBottom();
-      } 
+      }
     }
   }
 
   historyChanged: boolean;
+
   bChatTextArea: ?ChatUX;
+
   scrollAtBottom: boolean;
 
-   scrollToBottom() {
+  scrollToBottom() {
     const chat = this.bChatTextArea ? this.bChatTextArea : {};
     chat.scrollTop = chat.scrollHeight;
     if (chat.lastChild && chat.lastChild.id !== null) {
-      this.props.currentChannel.updateLastConsumedMessageIndex(parseInt(chat.lastChild.id)).then(resp => console.log(resp))}
-    //console.log(chat.children[chat.scrollTop].id)
+      this.props.currentChannel.updateLastConsumedMessageIndex(parseInt(chat.lastChild.id)).then(resp => console.log(resp))
+ ;}
+    // console.log(chat.children[chat.scrollTop].id)
   }
 
 
   render() {
     return (
       <div className={styles.chat__container}>
-        {this.props.currentChannel ? <ChatPanel
+        {this.props.currentChannel ? (
+<ChatPanel
           channel={this.props.currentChannel}
           messages={this.props.messages}
           inputRef={(el: ?HTMLDivElement) => {
             this.bChatTextArea = el;
           }}
-        /> : <EmptyContainer identity={this.props.identity} />
+        />
+) : <EmptyContainer identity={this.props.identity} />
         }
         <SocialContainer
           userList={this.props.userList}

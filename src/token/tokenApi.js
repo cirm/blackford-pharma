@@ -1,7 +1,7 @@
 // @flow
 import type { AuthPayload, TokenApiResponse } from '../types/General';
 
-const tokenApi: string = process.ENV === 'production' ? 'https://blackford.xyz' : 'http://localhost:4000';
+const tokenApi: string = process.env.NODE_ENV === 'production' ? 'https://blackford.xyz' : 'http://localhost:4000';
 
 export const postTokenApi = (payload: AuthPayload): Promise<TokenApiResponse> => fetch(`${tokenApi}/api/token`, {
   method: 'POST',
